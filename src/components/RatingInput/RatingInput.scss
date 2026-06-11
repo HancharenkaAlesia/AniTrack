@@ -1,0 +1,8 @@
+.rating-input {
+  display: flex;
+  justify-content: center;
+  column-gap: 4px;
+  button {
+    flex-shrink: 0;
+  }
+}

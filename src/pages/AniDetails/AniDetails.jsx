@@ -1,11 +1,11 @@
-import './AnimeDetails.scss'
+import './AniDetails.scss'
 import { Link, useParams } from 'react-router-dom'
-import animeList from '../../data/animeList.js'
 import { FiChevronLeft } from "react-icons/fi"
+import Rating from '../../components/Rating/Rating.jsx'
 
-const AnimeDetails = () => {
+const AniDetails = ({animeData}) => {
   const { id } = useParams()
-  const anime = animeList.find((anime) => anime.id === Number(id))
+  const anime = animeData.find((anime) => String(anime.id) === id)
 
   if (!anime) {
     return <h2>Anime not found</h2>
@@ -20,7 +20,7 @@ const AnimeDetails = () => {
         <p>Type: {anime.type}</p>
         <p>Genre: {anime.genre}</p>
         <p>Status: {anime.status}</p>
-        <p>Rating: {anime.rating}</p>
+        <Rating value={anime.rating} />
       </div>
       <p className='anime-details__note'>{anime.note}</p>
       <div className="anime-details__controls">
@@ -33,5 +33,5 @@ const AnimeDetails = () => {
   )
 }
 
-export default AnimeDetails
+export default AniDetails
 

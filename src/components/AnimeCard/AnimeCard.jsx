@@ -1,6 +1,7 @@
 import './AnimeCard.scss'
 import { FiTrash2 } from "react-icons/fi"
 import { Link } from "react-router-dom"
+import Rating from '../Rating/Rating.jsx'
 
 const AnimeCard = (props) => {
   const {
@@ -10,16 +11,19 @@ const AnimeCard = (props) => {
     status,
     rating,
     id,
+    mode,
     onDelete
   } = props
 
   return (
-    <li className="anime-card">
+    <li className={`anime-card anime-card--${mode}`}>
       <Link to={`/anime/${id}`} className="anime-card__content">
         <h2>{title}</h2>
-        <p className='anime-card__genre'>{genre} • {type}</p>
-        <p className='anime-card__status'>Status:<span> {status}</span></p>
-        <p className='anime-card__rating'>Rating: {rating}</p>
+        <div className="anime-card__wrapper">
+          <p className='anime-card__genre'>{genre} • {type}</p>
+          <p className='anime-card__status'>Status:<span> {status}</span></p>
+          <Rating value={rating} />
+        </div>
       </Link>
       <div className="anime-card__actions">
         <button

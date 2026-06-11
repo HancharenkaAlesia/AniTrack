@@ -1,0 +1,20 @@
+.anime-form {
+  display: grid;
+  gap: 16px;
+  select {
+    width: 100%
+  }
+  textarea {
+    width: 100%;
+  }
+  &__wrapper {
+    display: flex;
+    gap: 16px;
+  }
+  &__column {
+    flex: 0 0 calc(40% - 8px);
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+  }
+}
