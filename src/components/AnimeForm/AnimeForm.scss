@@ -1,20 +1,32 @@
 .anime-form {
   display: grid;
   gap: 16px;
-  select {
+
+  select, input, textarea {
     width: 100%
   }
-  textarea {
-    width: 100%;
-  }
+
   &__wrapper {
     display: flex;
     gap: 16px;
   }
+
   &__column {
     flex: 0 0 calc(40% - 8px);
     display: flex;
     flex-direction: column;
     row-gap: 16px;
+  }
+
+  &__item {
+    width: 100%;
+    position: relative;
+  }
+
+  &__error {
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    transform: translateY(100%);
   }
 }

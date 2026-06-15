@@ -73,12 +73,17 @@ html {
   }
 
   input, select, textarea {
+    width: 100%;
     padding: 10px 14px;
+    box-sizing: border-box;
     font-size: 16px;
     background-color: var(--color-surface);
     border: 2px solid var(--color-border);
     border-radius: var(--radius-sm);
     font-family: 'Zen Maru Gothic', sans-serif;
+    &.is-error {
+      border: 2px solid var(--color-error);
+    }
   }
 
   textarea {
@@ -101,5 +106,10 @@ html {
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
     padding: 40px;
+  }
+
+  .error {
+    font-size: 12px;
+    color: var(--color-error);
   }
 }

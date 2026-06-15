@@ -11,8 +11,30 @@ const AnimeForm = ({ onAddAnime }) => {
   const [rating, setRating] = useState(0)
   const [note, setNote] = useState('')
 
+  const [errors, setErrors] = useState({})
+
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    const newErrors = {}
+
+    if(!title.trim()) {
+      newErrors.title = 'Title is required'
+    }
+    if(!type) {
+      newErrors.type = 'Type is required'
+    }
+    if(!genre) {
+      newErrors.genre = 'Genre is required'
+    }
+    if(!status) {
+      newErrors.status = 'Status is required'
+    }
+
+    if(Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
 
     const anime = {
       title,
@@ -22,8 +44,23 @@ const AnimeForm = ({ onAddAnime }) => {
       rating,
       note
     }
+    setErrors({})
 
     onAddAnime(anime)
+    resetForm()
+  }
+
+  const clearError = (field) => {
+    if(errors[field]) {
+      setErrors(prev => {
+        const newErrors = {...prev}
+        delete newErrors[field]
+        return newErrors
+      })
+    }
+  }
+
+  const resetForm = () => {
     setTitle('')
     setType('')
     setGenre('')
@@ -43,53 +80,89 @@ const AnimeForm = ({ onAddAnime }) => {
           value={rating}
           onChange={setRating}
         />
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Anime title"
-          name="title"
-        />
+        <div className="anime-form__item">
+          <input
+            className={errors.title ? 'is-error' : ''}
+            type="text"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value)
+              clearError('title')
+            }}
+            placeholder="Anime title"
+            name="title"
+          />
+          {errors.title && (
+            <span className="anime-form__error error">{errors.title}</span>
+          )}
+        </div>
         <div className="anime-form__wrapper">
           <div className="anime-form__column">
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              name="type"
-            >
-              <option value="">Select type</option>
-              {options.types.map((type) => (
-                <option
-                  key={type}
-                  value={type}
-                >{type}</option>
-              ))}
-            </select>
-            <select
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              name="genre"
-            >
-              <option value="">Select genre</option>
-              {options.genres.map((genre) => (
-                <option
-                  key={genre}
-                  value={genre}
-                >{genre}</option>
-              ))}
-            </select>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option value="">Select status</option>
-              {options.statuses.map((status) => (
-                <option
-                  key={status}
-                  value={status}
-                >{status}</option>
-              ))}
-            </select>
+            <div className="anime-form__item">
+              <select
+                className={errors.type ? 'is-error' : ''}
+                value={type}
+                onChange={(e) => {
+                  setType(e.target.value)
+                  clearError('type')
+                }}
+                name="type"
+              >
+                <option value="">Select type</option>
+                {options.types.map((type) => (
+                  <option
+                    key={type}
+                    value={type}
+                  >{type}</option>
+                ))}
+              </select>
+              {errors.type && (
+                <span className="anime-form__error error">{errors.type}</span>
+              )}
+            </div>
+            <div className="anime-form__item">
+             <select
+               className={errors.genre ? 'is-error' : ''}
+               value={genre}
+               onChange={(e) => {
+                 setGenre(e.target.value)
+                 clearError('genre')
+               }}
+               name="genre"
+             >
+               <option value="">Select genre</option>
+               {options.genres.map((genre) => (
+                 <option
+                   key={genre}
+                   value={genre}
+                 >{genre}</option>
+               ))}
+             </select>
+             {errors.genre && (
+               <span className="anime-form__error error">{errors.genre}</span>
+             )}
+           </div>
+            <div className="anime-form__item">
+              <select
+                className={errors.status ? 'is-error' : ''}
+                value={status}
+                onChange={(e) => {
+                  setStatus(e.target.value)
+                  clearError('status')
+                }}
+              >
+                <option value="">Select status</option>
+                {options.statuses.map((status) => (
+                  <option
+                    key={status}
+                    value={status}
+                  >{status}</option>
+                ))}
+              </select>
+              {errors.status && (
+                <span className="anime-form__error error">{errors.status}</span>
+              )}
+            </div>
           </div>
           <textarea
             value={note}
