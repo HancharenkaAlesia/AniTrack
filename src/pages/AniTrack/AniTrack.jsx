@@ -7,23 +7,8 @@ import {
   FiList
 } from 'react-icons/fi'
 
-const AniTrack = ({animeData, setAnimeData}) => {
+const AniTrack = ({animeData, addAnime, deleteAnime}) => {
   const [view, setView] = useState('grid')
-
-  const deleteAnime = (id) => {
-    setAnimeData(prev =>
-      prev.filter(anime => anime.id !== id)
-    )
-  }
-
-  const addAnime = (data) => {
-    const newAnime = {
-      ...data,
-      id: crypto.randomUUID()
-    }
-
-    setAnimeData(prev => [...prev, newAnime])
-  }
 
   return (
     <div className="anitrack">
@@ -31,19 +16,19 @@ const AniTrack = ({animeData, setAnimeData}) => {
         <h1 className="anitrack__title">AniTrack 🌸</h1>
       </header>
       <AnimeForm
-        onAddAnime={addAnime}
+        onSubmit={addAnime}
       />
       <div className="anitrack__view-controls">
         <button
           aria-label="Grid view"
-          className={view === 'grid' ? 'is-active' : ''}
+          className={view === 'grid' ? 'button button--with-icon is-active' : 'button button--with-icon'}
           onClick={() => setView('grid')}
         >
           <FiGrid />
         </button>
         <button
           aria-label="List view"
-          className={view === 'list' ? 'is-active' : ''}
+          className={view === 'list' ? 'button button--with-icon is-active' : 'button button--with-icon'}
           onClick={() => setView('list')}>
           <FiList />
         </button>

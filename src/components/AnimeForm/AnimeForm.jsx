@@ -3,13 +3,25 @@ import RatingInput from '../RatingInput/RatingInput.jsx'
 import { useState } from 'react'
 import { options } from '../../data/options.js'
 
-const AnimeForm = ({ onAddAnime }) => {
-  const [title, setTitle] = useState('')
-  const [type, setType] = useState('')
-  const [genre, setGenre] = useState('')
-  const [status, setStatus] = useState('')
-  const [rating, setRating] = useState(0)
-  const [note, setNote] = useState('')
+const AnimeForm = ({ initialData, onSubmit }) => {
+  const [title, setTitle] = useState(
+    initialData?.title || ''
+  )
+  const [type, setType] = useState(
+    initialData?.type || ''
+  )
+  const [genre, setGenre] = useState(
+    initialData?.genre || ''
+  )
+  const [status, setStatus] = useState(
+    initialData?.status || ''
+  )
+  const [rating, setRating] = useState(
+    initialData?.rating || 0
+  )
+  const [note, setNote] = useState(
+    initialData?.note || ''
+  )
 
   const [errors, setErrors] = useState({})
 
@@ -46,8 +58,10 @@ const AnimeForm = ({ onAddAnime }) => {
     }
     setErrors({})
 
-    onAddAnime(anime)
-    resetForm()
+    onSubmit(anime)
+    if (!initialData) {
+      resetForm()
+    }
   }
 
   const clearError = (field) => {
@@ -71,7 +85,10 @@ const AnimeForm = ({ onAddAnime }) => {
 
   return (
     <>
-      <h2>Add new Anime 🌸</h2>
+      {!initialData && (
+        <h2>Add new Anime 🌸</h2>
+      )}
+
       <form
         className="anime-form"
         onSubmit={handleSubmit}
@@ -174,7 +191,7 @@ const AnimeForm = ({ onAddAnime }) => {
         <button
           type="submit"
         >
-          Add anime
+          {initialData ? 'Save changes' : 'Add anime'}
         </button>
       </form>
     </>

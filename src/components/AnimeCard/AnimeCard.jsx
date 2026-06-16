@@ -27,7 +27,7 @@ const AnimeCard = (props) => {
       </Link>
       <div className="anime-card__actions">
         <button
-          className='anime-card__delete'
+          className='anime-card__delete button button--with-icon'
           aria-label={`Delete ${title}`}
           title={`Delete ${title}`}
           onClick={() => onDelete(id)}

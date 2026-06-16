@@ -24,6 +24,31 @@ const App = () => {
     )
   }, [animeData])
 
+  const addAnime = (data) => {
+    const newAnime = {
+      ...data,
+      id: crypto.randomUUID()
+    }
+
+    setAnimeData(prev => [...prev, newAnime])
+  }
+
+  const deleteAnime = (id) => {
+    setAnimeData(prev =>
+      prev.filter(anime => anime.id !== id)
+    )
+  }
+
+  const updateAnime = (id, updatedAnime) => {
+    setAnimeData(prev => (
+      prev.map((anime) =>
+        anime.id === id
+        ? { ...anime, ...updatedAnime }
+          : anime
+      )
+    ))
+  }
+
   return (
     <div className='page'>
       <Routes>
@@ -31,6 +56,8 @@ const App = () => {
           path="/"
           element={
           <AniTrack
+            addAnime={addAnime}
+            deleteAnime={deleteAnime}
             animeData={animeData}
             setAnimeData={setAnimeData}
           />
@@ -41,6 +68,7 @@ const App = () => {
           element={
           <AniDetails
             animeData={animeData}
+            updateAnime={updateAnime}
           />
         } />
       </Routes>
