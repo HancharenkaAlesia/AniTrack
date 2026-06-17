@@ -3,6 +3,7 @@ import RatingInput from '../RatingInput/RatingInput.jsx'
 import { useState } from 'react'
 import { options } from '../../data/options.js'
 
+
 const AnimeForm = ({ initialData, onSubmit }) => {
   const [title, setTitle] = useState(
     initialData?.title || ''

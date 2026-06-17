@@ -9,6 +9,10 @@ html {
     outline-offset: 2px;
   }
 
+  mark {
+    background-color: var(--color-success);
+  }
+
   h1 {
     color: var(--color-text);
     margin: 0;
@@ -31,6 +35,7 @@ html {
   }
 
   button, .button {
+    min-width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;

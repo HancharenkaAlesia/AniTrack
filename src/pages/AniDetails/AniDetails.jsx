@@ -4,6 +4,7 @@ import { FiChevronLeft, FiEdit } from "react-icons/fi"
 import Rating from '../../components/Rating/Rating.jsx'
 import { useState } from 'react'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
+import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 
 const AniDetails = ({animeData, updateAnime}) => {
   const { id } = useParams()
@@ -40,19 +41,18 @@ const AniDetails = ({animeData, updateAnime}) => {
           <p className='anime-details__note'>{anime.note}</p>
         </>
       )}
-
-      <div className="anime-details__controls">
-        <Link to={`/`} className='anime-details__back button'>
-          <FiChevronLeft />
-          <span>Back</span>
-        </Link>
-        {!isEditing && (
-          <button onClick={() => setIsEditing(prevState => !prevState)}>
-            <FiEdit />
-            <span>Edit</span>
-          </button>
-        )}
-      </div>
+        <div className="anime-details__controls">
+          <Link to={`/`} className='anime-details__back button'>
+            <FiChevronLeft />
+            <span>Back</span>
+          </Link>
+          {!isEditing && (
+            <button onClick={() => setIsEditing(prevState => !prevState)}>
+              <FiEdit />
+              <span>Edit</span>
+            </button>
+          )}
+        </div>
     </div>
   )
 }

@@ -20,9 +20,18 @@
     }
   }
 
-  &__view-controls {
+  &__controls-panel {
     display: flex;
-    justify-content: end;
-    gap: 6px;
+    justify-content: space-between;
+    gap: 16px;
+    &-view {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: end;
+      gap: 6px;
+      button {
+        flex-shrink: 0;
+      }
+    }
   }
 }

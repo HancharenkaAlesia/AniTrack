@@ -12,13 +12,37 @@ const AnimeCard = (props) => {
     rating,
     id,
     mode,
+    searchQuery,
     onDelete
   } = props
+
+  const highlightText = (text, query) => {
+    const queryFormatted = query.trim()
+
+    if (!queryFormatted) return text
+
+    const escapedQuery = queryFormatted.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      '\\$&'
+    )
+
+    const pattern = new RegExp(`(${escapedQuery})`, 'ig')
+    const splitText = text.split(pattern)
+
+    return splitText.map((item, index) => {
+      if (item.toLowerCase() === queryFormatted.toLowerCase()) {
+        return <mark key={index}>{item}</mark>
+      } else {
+        return item
+      }
+    })
+
+  }
 
   return (
     <li className={`anime-card anime-card--${mode}`}>
       <Link to={`/anime/${id}`} className="anime-card__content">
-        <h2>{title}</h2>
+        <h2>{highlightText(title, searchQuery)}</h2>
         <div className="anime-card__wrapper">
           <p className='anime-card__genre'>{genre} • {type}</p>
           <p className='anime-card__status'>Status:<span> {status}</span></p>
