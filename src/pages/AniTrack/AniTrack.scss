@@ -21,9 +21,12 @@
   }
 
   &__controls-panel {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
+
+    &-wrapper {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
     &-view {
       flex-shrink: 0;
       display: flex;
