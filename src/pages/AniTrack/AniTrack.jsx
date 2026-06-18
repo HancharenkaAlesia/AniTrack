@@ -1,5 +1,5 @@
 import './AniTrack.scss'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
@@ -10,23 +10,17 @@ import {
 import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
 
-const EMPTY_FILTERS = {
-  type: '',
-  genre: '',
-  status: '',
-}
-
 const AniTrack = ({animeData, addAnime, deleteAnime}) => {
   const [view, setView] = useState('grid')
   const [searchQuery, setSearchQuery] = useState('')
 
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const [filters, setFilters] = useState({
+  const filters = {
     type: searchParams.get('type') || '',
     genre: searchParams.get('genre') || '',
     status: searchParams.get('status') || '',
-  })
+  }
 
   const finalAnimeData = animeData
     .filter(anime =>
@@ -43,26 +37,8 @@ const AniTrack = ({animeData, addAnime, deleteAnime}) => {
     )
 
   const filtersReset = () => {
-    setFilters(EMPTY_FILTERS)
+    setSearchParams({})
   }
-
-  useEffect(() => {
-    const params = {}
-
-    if (filters.type) {
-      params.type = filters.type
-    }
-
-    if (filters.genre) {
-      params.genre = filters.genre
-    }
-
-    if (filters.status) {
-      params.status = filters.status
-    }
-
-    setSearchParams(params)
-  }, [filters, setSearchParams])
 
 
   return (
@@ -96,9 +72,9 @@ const AniTrack = ({animeData, addAnime, deleteAnime}) => {
          </div>
        </div>
        <FiltersPanel
-          filters={filters}
-          setFilters={setFilters}
-          filtersReset={filtersReset}
+         filters={filters}
+         setSearchParams={setSearchParams}
+         filtersReset={filtersReset}
        />
       </div>
       <div className="anitrack__body">

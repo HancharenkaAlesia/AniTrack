@@ -1,12 +1,20 @@
 import { options } from '../../data/options.js'
 
-const FiltersPanel = ({filters, setFilters, filtersReset}) => {
+const FiltersPanel = ({filters, setSearchParams, filtersReset}) => {
 
   const handleFilterChange = (e) => {
-    setFilters(prev => ({
-      ...prev,
+    const nextFilters = {
+      ...filters,
       [e.target.name]: e.target.value,
-    }))
+    }
+
+    Object.keys(nextFilters).forEach(key => {
+      if (!nextFilters[key]) {
+        delete nextFilters[key]
+      }
+    })
+
+    setSearchParams(nextFilters)
   }
 
   return (
