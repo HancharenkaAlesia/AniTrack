@@ -1,12 +1,12 @@
 import './AniDetails.scss'
-import { Link, useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { FiChevronLeft, FiEdit } from "react-icons/fi"
 import Rating from '../../components/Rating/Rating.jsx'
 import { useState } from 'react'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
-import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 
 const AniDetails = ({animeData, updateAnime}) => {
+  const navigate = useNavigate()
   const { id } = useParams()
   const anime = animeData.find((anime) => String(anime.id) === id)
   const [isEditing, setIsEditing] = useState(false)
@@ -42,12 +42,16 @@ const AniDetails = ({animeData, updateAnime}) => {
         </>
       )}
         <div className="anime-details__controls">
-          <Link to={`/`} className='anime-details__back button'>
+          <button
+            onClick={() => navigate(-1)}
+            className='anime-details__back button'>
             <FiChevronLeft />
             <span>Back</span>
-          </Link>
+          </button>
           {!isEditing && (
-            <button onClick={() => setIsEditing(prevState => !prevState)}>
+            <button
+              onClick={() => setIsEditing(prev => !prev)}
+            >
               <FiEdit />
               <span>Edit</span>
             </button>
