@@ -21,6 +21,8 @@
   }
 
   &__controls-panel {
+    display: grid;
+    row-gap: 16px;
 
     &-wrapper {
       display: flex;

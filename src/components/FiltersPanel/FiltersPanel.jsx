@@ -1,27 +1,13 @@
+import './FiltersPanel.scss'
 import { options } from '../../data/options.js'
 
-const FiltersPanel = ({filters, setSearchParams, filtersReset}) => {
-
-  const handleFilterChange = (e) => {
-    const nextFilters = {
-      ...filters,
-      [e.target.name]: e.target.value,
-    }
-
-    Object.keys(nextFilters).forEach(key => {
-      if (!nextFilters[key]) {
-        delete nextFilters[key]
-      }
-    })
-
-    setSearchParams(nextFilters)
-  }
+const FiltersPanel = ({filters, onFilterChange, filtersReset}) => {
 
   return (
     <div className="filters-panel">
       <select
         value={filters.type}
-        onChange={handleFilterChange}
+        onChange={(e) => onFilterChange(e.target.name, e.target.value)}
         name="type"
       >
         <option value="">Select type</option>
@@ -35,7 +21,7 @@ const FiltersPanel = ({filters, setSearchParams, filtersReset}) => {
 
       <select
         value={filters.genre}
-        onChange={handleFilterChange}
+        onChange={(e) => onFilterChange(e.target.name, e.target.value)}
         name="genre"
       >
         <option value="">Select genre</option>
@@ -49,7 +35,7 @@ const FiltersPanel = ({filters, setSearchParams, filtersReset}) => {
 
       <select
         value={filters.status}
-        onChange={handleFilterChange}
+        onChange={(e) => onFilterChange(e.target.name, e.target.value)}
         name="status"
       >
         <option value="">Select status</option>

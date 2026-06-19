@@ -2,6 +2,7 @@ import './SearchForm.scss'
 import { FiSearch } from 'react-icons/fi'
 
 const SearchForm = ({onChange, value}) => {
+
   return (
     <div
       className="search-form"

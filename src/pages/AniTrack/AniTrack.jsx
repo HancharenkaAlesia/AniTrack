@@ -1,5 +1,5 @@
 import './AniTrack.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
@@ -12,19 +12,18 @@ import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
 
 const AniTrack = ({animeData, addAnime, deleteAnime}) => {
   const [view, setView] = useState('grid')
-  const [searchQuery, setSearchQuery] = useState('')
-
   const [searchParams, setSearchParams] = useSearchParams()
-
   const filters = {
     type: searchParams.get('type') || '',
     genre: searchParams.get('genre') || '',
     status: searchParams.get('status') || '',
+    search: searchParams.get('search') || '',
   }
+  const [searchInput, setSearchInput] = useState(filters.search)
 
   const finalAnimeData = animeData
     .filter(anime =>
-      anime.title.toLowerCase().includes(searchQuery.toLowerCase())
+      anime.title.toLowerCase().includes(filters.search.toLowerCase())
     )
     .filter(anime =>
       filters.type ? anime.type === filters.type : true
@@ -36,10 +35,37 @@ const AniTrack = ({animeData, addAnime, deleteAnime}) => {
       filters.status ? anime.status === filters.status : true
     )
 
+  const updateParams = (key, value) => {
+    setSearchParams(prev => {
+      const next = Object.fromEntries(prev)
+
+      if (!value) {
+        delete next[key]
+      } else {
+        next[key] = value
+      }
+
+      return next
+    })
+  }
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateParams('search', searchInput)
+    }, 300)
+
+    return () => clearTimeout(timeout)
+  }, [searchInput])
+
+  useEffect(() => {
+    if (filters.search !== searchInput) {
+      setSearchInput(filters.search)
+    }
+  }, [filters.search])
+
   const filtersReset = () => {
     setSearchParams({})
   }
-
 
   return (
     <div className="anitrack">
@@ -52,8 +78,8 @@ const AniTrack = ({animeData, addAnime, deleteAnime}) => {
       <div className="anitrack__controls-panel">
        <div className="anitrack__controls-panel-wrapper">
          <SearchForm
-           value={searchQuery}
-           onChange={setSearchQuery}
+           value={searchInput}
+           onChange={setSearchInput}
          />
          <div className="anitrack__controls-panel-view">
            <button
@@ -73,7 +99,7 @@ const AniTrack = ({animeData, addAnime, deleteAnime}) => {
        </div>
        <FiltersPanel
          filters={filters}
-         setSearchParams={setSearchParams}
+         onFilterChange={updateParams}
          filtersReset={filtersReset}
        />
       </div>
@@ -85,7 +111,7 @@ const AniTrack = ({animeData, addAnime, deleteAnime}) => {
                   key={item.id}
                   onDelete={deleteAnime}
                   mode={view}
-                  searchQuery={searchQuery}
+                  searchQuery={filters.search}
                   {...item}
                 />
               ))

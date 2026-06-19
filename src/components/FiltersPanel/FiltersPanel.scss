@@ -1,0 +1,7 @@
+.filters-panel {
+  display: flex;
+  gap: 16px;
+  button {
+    flex-shrink: 0;
+  }
+}
