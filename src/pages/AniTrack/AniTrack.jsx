@@ -1,6 +1,5 @@
 import './AniTrack.scss'
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useMemo } from 'react'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
 import {
@@ -9,63 +8,36 @@ import {
 } from 'react-icons/fi'
 import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
+import useAnimeFilters from '../../hooks/useAnimeFilters.js'
+import useLocalStorage from '../../hooks/useLocalStorage.js'
 
 const AniTrack = ({animeData, addAnime, deleteAnime}) => {
-  const [view, setView] = useState('grid')
-  const [searchParams, setSearchParams] = useSearchParams()
-  const filters = {
-    type: searchParams.get('type') || '',
-    genre: searchParams.get('genre') || '',
-    status: searchParams.get('status') || '',
-    search: searchParams.get('search') || '',
-  }
-  const [searchInput, setSearchInput] = useState(filters.search)
+  const {
+    filters,
+    searchInput,
+    setSearchInput,
+    updateParams,
+    filtersReset,
+  } = useAnimeFilters()
 
-  const finalAnimeData = animeData
-    .filter(anime =>
-      anime.title.toLowerCase().includes(filters.search.toLowerCase())
-    )
-    .filter(anime =>
-      filters.type ? anime.type === filters.type : true
-    )
-    .filter(anime =>
-      filters.genre ? anime.genre === filters.genre : true
-    )
-    .filter(anime =>
-      filters.status ? anime.status === filters.status : true
-    )
+  const [view, setView] = useLocalStorage('list-view', 'grid')
 
-  const updateParams = (key, value) => {
-    setSearchParams(prev => {
-      const next = Object.fromEntries(prev)
+  const finalAnimeData = useMemo(() => {
+    return animeData.filter((anime) => {
+      const matchesSearch = anime.title.toLowerCase().includes(filters.search.toLowerCase())
 
-      if (!value) {
-        delete next[key]
-      } else {
-        next[key] = value
-      }
+      const matchesType = !filters.type || anime.type === filters.type
+      const matchesGenre = !filters.genre || anime.genre === filters.genre
+      const matchesStatus = !filters.status || anime.status === filters.status
 
-      return next
+      return (
+        matchesSearch &&
+        matchesType &&
+        matchesGenre &&
+        matchesStatus
+      )
     })
-  }
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      updateParams('search', searchInput)
-    }, 300)
-
-    return () => clearTimeout(timeout)
-  }, [searchInput])
-
-  useEffect(() => {
-    if (filters.search !== searchInput) {
-      setSearchInput(filters.search)
-    }
-  }, [filters.search])
-
-  const filtersReset = () => {
-    setSearchParams({})
-  }
+  }, [filters, animeData])
 
   return (
     <div className="anitrack">
