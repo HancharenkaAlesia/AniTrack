@@ -3,8 +3,7 @@ import RatingInput from '../RatingInput/RatingInput.jsx'
 import { useState } from 'react'
 import { options } from '../../data/options.js'
 
-
-const AnimeForm = ({ initialData, onSubmit }) => {
+const AnimeForm = ({ initialData, onSubmit, loading }) => {
   const [title, setTitle] = useState(
     initialData?.title || ''
   )
@@ -31,20 +30,20 @@ const AnimeForm = ({ initialData, onSubmit }) => {
 
     const newErrors = {}
 
-    if(!title.trim()) {
+    if (!title.trim()) {
       newErrors.title = 'Title is required'
     }
-    if(!type) {
+    if (!type) {
       newErrors.type = 'Type is required'
     }
-    if(!genre) {
+    if (!genre) {
       newErrors.genre = 'Genre is required'
     }
-    if(!status) {
+    if (!status) {
       newErrors.status = 'Status is required'
     }
 
-    if(Object.keys(newErrors).length > 0) {
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
@@ -66,9 +65,9 @@ const AnimeForm = ({ initialData, onSubmit }) => {
   }
 
   const clearError = (field) => {
-    if(errors[field]) {
+    if (errors[field]) {
       setErrors(prev => {
-        const newErrors = {...prev}
+        const newErrors = { ...prev }
         delete newErrors[field]
         return newErrors
       })
@@ -139,27 +138,27 @@ const AnimeForm = ({ initialData, onSubmit }) => {
               )}
             </div>
             <div className="anime-form__item">
-             <select
-               className={errors.genre ? 'is-error' : ''}
-               value={genre}
-               onChange={(e) => {
-                 setGenre(e.target.value)
-                 clearError('genre')
-               }}
-               name="genre"
-             >
-               <option value="">Select genre</option>
-               {options.genres.map((genre) => (
-                 <option
-                   key={genre}
-                   value={genre}
-                 >{genre}</option>
-               ))}
-             </select>
-             {errors.genre && (
-               <span className="anime-form__error error">{errors.genre}</span>
-             )}
-           </div>
+              <select
+                className={errors.genre ? 'is-error' : ''}
+                value={genre}
+                onChange={(e) => {
+                  setGenre(e.target.value)
+                  clearError('genre')
+                }}
+                name="genre"
+              >
+                <option value="">Select genre</option>
+                {options.genres.map((genre) => (
+                  <option
+                    key={genre}
+                    value={genre}
+                  >{genre}</option>
+                ))}
+              </select>
+              {errors.genre && (
+                <span className="anime-form__error error">{errors.genre}</span>
+              )}
+            </div>
             <div className="anime-form__item">
               <select
                 className={errors.status ? 'is-error' : ''}
@@ -191,8 +190,17 @@ const AnimeForm = ({ initialData, onSubmit }) => {
         </div>
         <button
           type="submit"
+          disabled={loading}
         >
-          {initialData ? 'Save changes' : 'Add anime'}
+          {loading ? (
+              'Loading...'
+            )
+            : initialData ? (
+                'Save changes'
+              )
+              : (
+                'Add anime'
+              )}
         </button>
       </form>
     </>

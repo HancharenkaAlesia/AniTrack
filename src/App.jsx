@@ -67,7 +67,6 @@ const App = () => {
           path="/anime/:id"
           element={
           <AniDetails
-            animeData={animeData}
             updateAnime={updateAnime}
           />
         } />

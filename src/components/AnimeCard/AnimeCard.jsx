@@ -1,5 +1,5 @@
 import './AnimeCard.scss'
-import { FiTrash2 } from "react-icons/fi"
+import { FiTrash2, FiLoader } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import Rating from '../Rating/Rating.jsx'
 
@@ -13,7 +13,8 @@ const AnimeCard = (props) => {
     id,
     mode,
     searchQuery,
-    onDelete
+    onDelete,
+    isDeleting
   } = props
 
   const highlightText = (text, query) => {
@@ -55,8 +56,9 @@ const AnimeCard = (props) => {
           aria-label={`Delete ${title}`}
           title={`Delete ${title}`}
           onClick={() => onDelete(id)}
+          disabled={isDeleting}
         >
-          <FiTrash2 />
+          {isDeleting ? <FiLoader className="spin" /> : <FiTrash2 />}
         </button>
       </div>
     </li>

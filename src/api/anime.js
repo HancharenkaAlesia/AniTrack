@@ -6,6 +6,15 @@ export const getAnime = async () => {
     .select('*')
 }
 
+export const getAnimeById = async (id) => {
+  return await supabase
+    .from('anime')
+    .select('*')
+    .eq('id', id)
+    .single()
+}
+
+
 export const addAnime = async (anime) => {
   return await supabase
     .from('anime')
@@ -18,4 +27,12 @@ export const deleteAnime = async (id) => {
     .from('anime')
     .delete()
     .eq('id', id)
+}
+
+export const updateAnime = async (id, updates) => {
+  return await supabase
+    .from('anime')
+    .update(updates)
+    .eq('id', id)
+    .select()
 }

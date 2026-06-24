@@ -2,21 +2,45 @@ import './AniDetails.scss'
 import { useParams, useNavigate } from 'react-router-dom'
 import { FiChevronLeft, FiEdit } from "react-icons/fi"
 import Rating from '../../components/Rating/Rating.jsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
+import { updateAnime, getAnimeById } from '../../api/anime'
 
-const AniDetails = ({animeData, updateAnime}) => {
+const AniDetails = () => {
   const navigate = useNavigate()
+  const [anime, setAnime] = useState(null)
   const { id } = useParams()
-  const anime = animeData.find((anime) => String(anime.id) === id)
+
+  useEffect(() => {
+    const fetchOne = async () => {
+      const { data, error } = await getAnimeById(id)
+
+      if (error) {
+        console.error(error)
+        return
+      }
+
+      setAnime(data)
+    }
+
+    fetchOne()
+  }, [id])
+
   const [isEditing, setIsEditing] = useState(false)
 
   if (!anime) {
-    return <h2>Anime not found</h2>
+    return <h2>Loading...</h2>
   }
 
-  const handleUpdateAnime = (updateData) => {
-    updateAnime(anime.id, updateData)
+  const handleUpdateAnime = async (updateData) => {
+    const { data, error } = await updateAnime(anime.id, updateData)
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    setAnime(data[0])
     setIsEditing(false)
   }
 

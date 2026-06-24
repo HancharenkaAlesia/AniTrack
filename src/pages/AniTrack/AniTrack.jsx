@@ -1,5 +1,5 @@
 import './AniTrack.scss'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
 import SearchForm from '../../components/SearchForm/SearchForm.jsx'
@@ -7,13 +7,11 @@ import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
 import useAnimeFilters from '../../hooks/useAnimeFilters.js'
 import useLocalStorage from '../../hooks/useLocalStorage.js'
 import { FiGrid, FiList } from 'react-icons/fi'
-import { getAnime, addAnime, deleteAnime,} from '../../api/anime'
+import useAnime from '../../hooks/useAnime.js'
+import AnimeCardSkeleton
+  from '../../components/AnimeCardSkeleton/AnimeCardSkeleton.jsx'
 
 const AniTrack = () => {
-  const [anime, setAnime] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
   const {
     filters,
     searchInput,
@@ -22,9 +20,19 @@ const AniTrack = () => {
     filtersReset,
   } = useAnimeFilters()
 
+  const {
+    anime,
+    loading,
+    error,
+    isAdding,
+    deletingId,
+    handleAddAnime,
+    handleDeleteAnime,
+  } = useAnime()
+
   const [view, setView] = useLocalStorage('list-view', 'grid')
 
-  const finalAnimeData = useMemo(() => {
+  const filteredAnime = useMemo(() => {
     return anime.filter((anime) => {
       const matchesSearch = anime.title.toLowerCase().includes(filters.search.toLowerCase())
 
@@ -39,48 +47,7 @@ const AniTrack = () => {
         matchesStatus
       )
     })
-  }, [filters, anime])
-
-  useEffect(() => {
-    const fetchAnime = async () => {
-      try {
-        const { data, error } = await getAnime()
-
-        if (error) {
-          throw error
-        }
-
-        setAnime(data)
-      } catch (error) {
-        console.error(error)
-        setError(error.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchAnime()
-  }, [])
-
-  const handleAddAnime = async (newAnime) => {
-    const { data, error } = await addAnime(newAnime)
-    if (error) {
-      console.error(error)
-      return
-    }
-
-    setAnime(prev => [data[0], ...prev])
-  }
-
-  const handleDeleteAnime = async (id) => {
-    const { error } = await deleteAnime(id)
-    if (error) {
-      console.error(error)
-      return
-    }
-
-    setAnime(prev => prev.filter(item => item.id !== id))
-  }
+  }, [filters.search, filters.type, filters.genre, filters.status, anime])
 
   return (
     <div className="anitrack">
@@ -89,6 +56,7 @@ const AniTrack = () => {
       </header>
       <AnimeForm
         onSubmit={handleAddAnime}
+        loading={isAdding}
       />
       <div className="anitrack__controls-panel">
         <div className="anitrack__controls-panel-wrapper">
@@ -121,17 +89,22 @@ const AniTrack = () => {
       </div>
       <div className="anitrack__body">
         {loading ? (
-            <h2>Loading...</h2>
+            <ul className={`anitrack__list anitrack__list--${view}`}>
+              {Array.from({ length: 6 }).map((_, index) => (
+                <AnimeCardSkeleton key={index} />
+              ))}
+            </ul>
           )
           : error ?(
             <h2>Error: {error}</h2>
           )
-          : finalAnimeData.length > 0 ? (
+          : filteredAnime.length > 0 ? (
               <ul className={`anitrack__list anitrack__list--${view}`}>
-                {finalAnimeData.map((item) => (
+                {filteredAnime.map((item) => (
                   <AnimeCard
                     key={item.id}
                     onDelete={handleDeleteAnime}
+                    isDeleting={deletingId === item.id}
                     mode={view}
                     searchQuery={filters.search}
                     {...item}

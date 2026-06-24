@@ -41,6 +41,14 @@
     position: absolute;
     right: 10px;
     top: 10px;
+    .spin {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
   }
 
   &__status, &__rating {
