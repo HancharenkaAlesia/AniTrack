@@ -15,12 +15,16 @@ const useAnime = () => {
       if (error) throw error
       setAnime(prev => [data[0], ...prev])
 
+      return true
+
     } catch (error) {
       console.error(error)
 
     } finally {
       setIsAdding(false)
     }
+
+
   }
 
   const handleDeleteAnime = async (id) => {

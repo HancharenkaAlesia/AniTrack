@@ -1,0 +1,36 @@
+.add-anime-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+
+  border: none;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  width: min(600px, 90vw);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: center;
+  transition: all 0.2s ease;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+  }
+
+  &.is-open {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+}

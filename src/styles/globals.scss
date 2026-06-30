@@ -21,7 +21,7 @@ html {
 
   h2 {
     text-align: center;
-    margin: 0;
+    margin: 0 0 5px;
   }
 
   ul, ol {
@@ -35,7 +35,6 @@ html {
   }
 
   button, .button {
-    min-width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,12 +62,17 @@ html {
     }
     
     &--with-icon {
-      background: var(--color-primary-light);
-      padding: 7px;
+      font-size: 18px;
+      height: 35px;
+      width: 35px;
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--color-text);
       @media (hover: hover) {
-
         &:hover {
-          background: var(--color-primary-dark);
+          color: var(--color-primary-dark);
+          background: none;
         }
       }
     }
@@ -76,6 +80,7 @@ html {
     &.is-active {
       background: var(--color-primary-dark);
       border-color: var(--color-surface);
+      color: var(--color-surface);
     }
   }
 

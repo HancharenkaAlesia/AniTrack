@@ -10,6 +10,7 @@ import { FiGrid, FiList } from 'react-icons/fi'
 import useAnime from '../../hooks/useAnime.js'
 import AnimeCardSkeleton
   from '../../components/AnimeCardSkeleton/AnimeCardSkeleton.jsx'
+import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
 
 const AniTrack = () => {
   const {
@@ -31,7 +32,6 @@ const AniTrack = () => {
   } = useAnime()
 
   const [view, setView] = useLocalStorage('list-view', 'grid')
-
   const filteredAnime = useMemo(() => {
     return anime.filter((anime) => {
       const matchesSearch = anime.title.toLowerCase().includes(filters.search.toLowerCase())
@@ -54,10 +54,11 @@ const AniTrack = () => {
       <header className="anitrack__header">
         <h1 className="anitrack__title">AniTrack 🌸</h1>
       </header>
-      <AnimeForm
+      <AddAnimeModal
         onSubmit={handleAddAnime}
         loading={isAdding}
       />
+
       <div className="anitrack__controls-panel">
         <div className="anitrack__controls-panel-wrapper">
           <SearchForm

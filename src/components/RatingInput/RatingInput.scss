@@ -5,4 +5,11 @@
   button {
     flex-shrink: 0;
   }
+  &__emoji {
+    opacity: 0.3;
+    transition: 0.2s ease;
+    &--active {
+      opacity: 1;
+    }
+  }
 }
