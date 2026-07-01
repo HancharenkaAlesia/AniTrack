@@ -10,33 +10,28 @@ const useAnime = () => {
 
   const handleAddAnime = async (newAnime) => {
     setIsAdding(true)
+
     try {
       const { data, error } = await addAnime(newAnime)
+
       if (error) throw error
+
       setAnime(prev => [data[0], ...prev])
-
-      return true
-
-    } catch (error) {
-      console.error(error)
-
     } finally {
       setIsAdding(false)
     }
-
-
   }
 
   const handleDeleteAnime = async (id) => {
     setDeletingId(id)
+
     try {
       const { error } = await deleteAnime(id)
 
       if (error) throw error
 
       setAnime(prev => prev.filter(item => item.id !== id))
-    } catch (error) {
-      console.error(error)
+
     } finally {
       setDeletingId(null)
     }
@@ -72,7 +67,7 @@ const useAnime = () => {
     isAdding,
     deletingId,
     handleAddAnime,
-    handleDeleteAnime,
+    handleDeleteAnime
   }
 }
 

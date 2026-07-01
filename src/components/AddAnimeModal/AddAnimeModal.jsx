@@ -30,10 +30,11 @@ const AddAnimeModal = ({onSubmit, loading}) => {
   }
 
   const handleSubmit = async (formData) => {
-    const success = await onSubmit(formData)
-
-    if (success) {
+    try {
+      await onSubmit(formData)
       closeModal()
+    } catch(error) {
+      console.log(error)
     }
   }
 

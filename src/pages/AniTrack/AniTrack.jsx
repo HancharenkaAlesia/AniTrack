@@ -1,7 +1,6 @@
 import './AniTrack.scss'
 import { useMemo } from 'react'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
-import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
 import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
 import useAnimeFilters from '../../hooks/useAnimeFilters.js'
@@ -11,6 +10,8 @@ import useAnime from '../../hooks/useAnime.js'
 import AnimeCardSkeleton
   from '../../components/AnimeCardSkeleton/AnimeCardSkeleton.jsx'
 import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
+import useToast from '../../hooks/useToast.js'
+import Toast from '../../components/Toast/Toast.jsx'
 
 const AniTrack = () => {
   const {
@@ -28,8 +29,13 @@ const AniTrack = () => {
     isAdding,
     deletingId,
     handleAddAnime,
-    handleDeleteAnime,
+    handleDeleteAnime
   } = useAnime()
+
+  const {
+    toast,
+    showToast,
+  } = useToast()
 
   const [view, setView] = useLocalStorage('list-view', 'grid')
   const filteredAnime = useMemo(() => {
@@ -49,13 +55,32 @@ const AniTrack = () => {
     })
   }, [filters.search, filters.type, filters.genre, filters.status, anime])
 
+  const onAddAnime = async (data) => {
+    try {
+      await handleAddAnime(data)
+      showToast('Anime added 🌸')
+    } catch {
+      showToast('Something went wrong ❌', 'error')
+      throw error
+    }
+  }
+
+  const onDeleteAnime = async (id) => {
+    try {
+      await handleDeleteAnime(id)
+      showToast('Deleted 🗑', 'success')
+    } catch {
+      showToast('Delete failed ❌', 'error')
+    }
+  }
+
   return (
     <div className="anitrack">
       <header className="anitrack__header">
         <h1 className="anitrack__title">AniTrack 🌸</h1>
       </header>
       <AddAnimeModal
-        onSubmit={handleAddAnime}
+        onSubmit={onAddAnime}
         loading={isAdding}
       />
 
@@ -104,7 +129,7 @@ const AniTrack = () => {
                 {filteredAnime.map((item) => (
                   <AnimeCard
                     key={item.id}
-                    onDelete={handleDeleteAnime}
+                    onDelete={onDeleteAnime}
                     isDeleting={deletingId === item.id}
                     mode={view}
                     searchQuery={filters.search}
@@ -118,6 +143,9 @@ const AniTrack = () => {
               <h2>Nothing found. Please refine your search.</h2>
             )}
       </div>
+      {toast && (
+        <Toast toast={toast} />
+      )}
     </div>
   )
 }

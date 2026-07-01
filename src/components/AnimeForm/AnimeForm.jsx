@@ -25,7 +25,7 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
 
   const [errors, setErrors] = useState({})
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const newErrors = {}
@@ -58,7 +58,8 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
     }
     setErrors({})
 
-    onSubmit(anime)
+    await onSubmit(anime)
+
     if (!initialData) {
       resetForm()
     }
