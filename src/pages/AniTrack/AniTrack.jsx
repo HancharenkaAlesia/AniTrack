@@ -1,5 +1,5 @@
 import './AniTrack.scss'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
 import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
@@ -13,6 +13,7 @@ import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
 import useToast from '../../hooks/useToast.js'
 import Toast from '../../components/Toast/Toast.jsx'
 import Sort from '../../components/Sort/Sort.jsx'
+import EmptyState from '../../components/EmptyState/EmptyState.jsx'
 
 const AniTrack = () => {
   const {
@@ -102,6 +103,10 @@ const AniTrack = () => {
     }
   }
 
+  const isInitialEmpty = !loading && !error && anime.length === 0
+  const isNoResults = !loading && !error && anime.length > 0 && filteredAnime.length === 0
+  const hasResults = filteredAnime.length > 0
+
   return (
     <div className="anitrack">
       <header className="anitrack__header">
@@ -146,34 +151,38 @@ const AniTrack = () => {
         />
       </div>
       <div className="anitrack__body">
-        {loading ? (
-            <ul className={`anitrack__list anitrack__list--${view}`}>
-              {Array.from({ length: 6 }).map((_, index) => (
-                <AnimeCardSkeleton key={index} />
-              ))}
-            </ul>
-          )
-          : error ?(
-            <h2>Error: {error}</h2>
-          )
-          : filteredAnime.length > 0 ? (
-              <ul className={`anitrack__list anitrack__list--${view}`}>
-                {filteredAnime.map((item) => (
-                  <AnimeCard
-                    key={item.id}
-                    onDelete={onDeleteAnime}
-                    isDeleting={deletingId === item.id}
-                    mode={view}
-                    searchQuery={filters.search}
-                    {...item}
-                  />
-                ))
-                }
-              </ul>
-            )
-            : (
-              <h2>Nothing found. Please refine your search.</h2>
-            )}
+        {loading && (
+          <ul className={`anitrack__list anitrack__list--${view}`}>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <AnimeCardSkeleton key={index} />
+            ))}
+          </ul>
+        )}
+        {error && (
+          <EmptyState type="error" error={error} />
+        )}
+
+        {isInitialEmpty && (
+          <EmptyState type="empty" />
+        )}
+
+        {isNoResults && (
+          <EmptyState type="no-results" />
+        )}
+        {hasResults && (
+          <ul className={`anitrack__list anitrack__list--${view}`}>
+            {filteredAnime.map((item) => (
+              <AnimeCard
+                key={item.id}
+                onDelete={onDeleteAnime}
+                isDeleting={deletingId === item.id}
+                mode={view}
+                searchQuery={filters.search}
+                {...item}
+              />
+            ))}
+          </ul>
+        )}
       </div>
       {toast && (
         <Toast toast={toast} />
