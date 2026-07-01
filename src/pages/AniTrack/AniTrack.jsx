@@ -12,6 +12,7 @@ import AnimeCardSkeleton
 import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
 import useToast from '../../hooks/useToast.js'
 import Toast from '../../components/Toast/Toast.jsx'
+import Sort from '../../components/Sort/Sort.jsx'
 
 const AniTrack = () => {
   const {
@@ -39,7 +40,7 @@ const AniTrack = () => {
 
   const [view, setView] = useLocalStorage('list-view', 'grid')
   const filteredAnime = useMemo(() => {
-    return anime.filter((anime) => {
+    const filtered =  anime.filter((anime) => {
       const matchesSearch = anime.title.toLowerCase().includes(filters.search.toLowerCase())
 
       const matchesType = !filters.type || anime.type === filters.type
@@ -53,13 +54,39 @@ const AniTrack = () => {
         matchesStatus
       )
     })
-  }, [filters.search, filters.type, filters.genre, filters.status, anime])
+
+    const sorted = [...filtered]
+
+    switch (filters.sort) {
+      case 'newest':
+        sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        break
+      case 'oldest':
+        sorted.sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+        break
+      case 'rating-desc':
+        sorted.sort((a, b) => b.rating - a.rating)
+        break
+      case 'rating-asc':
+        sorted.sort((a, b) => a.rating - b.rating)
+        break
+      case 'title-asc':
+        sorted.sort((a, b) => a.title.localeCompare(b.title))
+        break
+      case 'title-desc':
+        sorted.sort((a, b) => b.title.localeCompare(a.title))
+        break
+      default: break
+    }
+
+    return sorted
+  }, [filters.search, filters.type, filters.genre, filters.status, filters.sort,  anime])
 
   const onAddAnime = async (data) => {
     try {
       await handleAddAnime(data)
       showToast('Anime added 🌸')
-    } catch {
+    } catch (error) {
       showToast('Something went wrong ❌', 'error')
       throw error
     }
@@ -69,8 +96,9 @@ const AniTrack = () => {
     try {
       await handleDeleteAnime(id)
       showToast('Deleted 🗑', 'success')
-    } catch {
+    } catch(error) {
       showToast('Delete failed ❌', 'error')
+      throw error
     }
   }
 
@@ -89,6 +117,10 @@ const AniTrack = () => {
           <SearchForm
             value={searchInput}
             onChange={setSearchInput}
+          />
+          <Sort
+            value={filters.sort}
+            onChange={updateParams}
           />
           <div className="anitrack__controls-panel-view">
             <button

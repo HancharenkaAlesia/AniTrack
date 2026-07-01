@@ -1,6 +1,6 @@
 import './AniDetails.scss'
 import { useParams, useNavigate } from 'react-router-dom'
-import { FiChevronLeft, FiEdit } from "react-icons/fi"
+import { FiChevronLeft, FiEdit, FiLoader } from 'react-icons/fi'
 import Rating from '../../components/Rating/Rating.jsx'
 import { useEffect, useState } from 'react'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
@@ -27,21 +27,27 @@ const AniDetails = () => {
   }, [id])
 
   const [isEditing, setIsEditing] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   if (!anime) {
-    return <h2>Loading...</h2>
+    return  <div className="loading"><FiLoader className="spin" /></div>
   }
 
   const handleUpdateAnime = async (updateData) => {
-    const { data, error } = await updateAnime(anime.id, updateData)
+    setIsUpdating(true)
 
-    if (error) {
+    try {
+      const { data, error } = await updateAnime(anime.id, updateData)
+
+      if (error) throw error
+
+      setAnime(data[0])
+      setIsEditing(false)
+    } catch (error) {
       console.error(error)
-      return
+    } finally {
+      setIsUpdating(false)
     }
-
-    setAnime(data[0])
-    setIsEditing(false)
   }
 
   return (
@@ -53,6 +59,7 @@ const AniDetails = () => {
         <AnimeForm
           initialData={anime}
           onSubmit={handleUpdateAnime}
+          loading={isUpdating}
         />
       ) : (
         <>

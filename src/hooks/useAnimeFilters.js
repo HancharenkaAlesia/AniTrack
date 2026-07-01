@@ -8,6 +8,7 @@ const useAnimeFilters = () => {
     genre: searchParams.get('genre') || '',
     status: searchParams.get('status') || '',
     search: searchParams.get('search') || '',
+    sort: searchParams.get('sort') || '',
   }
   const [searchInput, setSearchInput] = useState(filters.search)
   const updateParams = (key, value) => {
