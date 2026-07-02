@@ -5,6 +5,7 @@ import Rating from '../../components/Rating/Rating.jsx'
 import { useEffect, useState } from 'react'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
 import { updateAnime, getAnimeById } from '../../api/anime'
+import { uploadPoster } from '../../api/storage.js'
 
 const AniDetails = () => {
   const navigate = useNavigate()
@@ -37,7 +38,18 @@ const AniDetails = () => {
     setIsUpdating(true)
 
     try {
-      const { data, error } = await updateAnime(anime.id, updateData)
+      let imageUrl = anime.image_url
+
+      if (updateData.image) {
+        imageUrl = await uploadPoster(updateData.image)
+      }
+
+      const { image, ...rest } = updateData
+
+      const { data, error } = await updateAnime(anime.id, {
+        ...rest,
+        image_url: imageUrl,
+      })
 
       if (error) throw error
 

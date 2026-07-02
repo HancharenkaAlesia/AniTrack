@@ -27,6 +27,7 @@ export const options = {
     'Watching',
     'Completed',
     'Dropped',
+    'Planned',
   ],
 
 

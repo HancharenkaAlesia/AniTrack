@@ -29,4 +29,9 @@
     left: 0px;
     transform: translateY(100%);
   }
+
+  &__preview {
+    width: 160px;
+    border-radius: var(--radius);
+  }
 }

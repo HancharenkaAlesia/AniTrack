@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getAnime, addAnime, deleteAnime } from '../api/anime.js'
+import { uploadPoster } from '../api/storage'
 
 const useAnime = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -12,7 +13,16 @@ const useAnime = () => {
     setIsAdding(true)
 
     try {
-      const { data, error } = await addAnime(newAnime)
+      const animeToSave = { ...newAnime }
+
+      if (newAnime.image) {
+        const imageUrl = await uploadPoster(newAnime.image)
+        animeToSave.image_url = imageUrl
+      }
+
+      delete animeToSave.image
+
+      const { data, error } = await addAnime(animeToSave)
 
       if (error) throw error
 

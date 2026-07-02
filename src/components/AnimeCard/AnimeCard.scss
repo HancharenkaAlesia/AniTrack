@@ -1,27 +1,23 @@
 .anime-card {
   position: relative;
-
-
-  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
   transition-duration: 0.2s;
 
-  &--grid {
-    padding: 45px 20px 30px;
-  }
-
-  &--list {
-    padding: 15px 40px 10px 20px;
-    h2 {
-      text-align: left;
-    }
+  &--list.anime-card {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
     .anime-card {
-      &__wrapper {
-        display: flex;
-        align-items: center;
-        gap: 16px;
+      &__poster {
+        flex-shrink: 0;
+        width: 200px;
+        height: 100px;
+        border-radius: 0 var(--radius) var(--radius) 0;
+      }
+      &__content {
+        width: 100%;
       }
     }
   }
@@ -33,20 +29,119 @@
     }
   }
 
-  h2 {
-    word-break: break-all;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__name {
+    font-size: 18px;
+    margin-bottom: 0;
+    text-align: left;
   }
 
   &__delete {
+    z-index: 100;
     position: absolute;
     right: 10px;
     top: 12px;
+
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--color-text);
+    width: 40px;
+    height: 40px;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.15));
+    font-size: 20px;
   }
 
   &__status, &__rating {
     font-weight: 600;
+
     span {
       font-weight: 400;
+    }
+  }
+
+  &__content {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  &__poster {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.65rem;
+
+    border-radius: 999px;
+
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+
+    border: 1px solid transparent;
+
+    transition: background-color .2s,
+    color .2s,
+    border-color .2s;
+
+    &--success {
+      background: #edf8ef;
+      color: #4f8c63;
+      border-color: #cfe8d5;
+    }
+
+    &--info {
+      background: var(--color-bg-secondary);
+      color: var(--color-primary-dark);
+      border-color: var(--color-border);
+    }
+
+    &--warning {
+      background: #fff5e7;
+      color: #b77a2d;
+      border-color: #f5ddb3;
+    }
+
+    &--danger {
+      background: #fdecef;
+      color: #b95b6c;
+      border-color: #f3c7d1;
+    }
+
+    &--default {
+      background: var(--color-bg-secondary);
+      color: var(--color-text-secondary);
+      border-color: var(--color-border);
+    }
+
+    &--type {
+      background: #eef4ff;
+      color: #5b6da8;
+      border-color: #d8e3fb;
+    }
+
+    &--genre {
+      background: #f6efff;
+      color: #7d63a7;
+      border-color: #e3d6f7;
     }
   }
 }

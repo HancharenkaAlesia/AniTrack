@@ -179,6 +179,7 @@ const AniTrack = () => {
                 mode={view}
                 searchQuery={filters.search}
                 {...item}
+
               />
             ))}
           </ul>

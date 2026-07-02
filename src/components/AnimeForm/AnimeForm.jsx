@@ -23,6 +23,8 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
     initialData?.note || ''
   )
 
+  const [image, setImage] = useState(null)
+  const [preview, setPreview] = useState(initialData?.image_url || '')
   const [errors, setErrors] = useState({})
 
   const handleSubmit = async (e) => {
@@ -54,7 +56,8 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
       genre,
       status,
       rating,
-      note
+      note,
+      ...(image && { image }),
     }
     setErrors({})
 
@@ -82,6 +85,15 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
     setStatus('')
     setRating(0)
     setNote('')
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+
+    if (!file) return
+
+    setImage(file)
+    setPreview(URL.createObjectURL(file))
   }
 
   return (
@@ -189,6 +201,18 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
             name="notes"
           />
         </div>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            className="anime-form__preview"
+          />
+        )}
         <button
           type="submit"
           disabled={loading}
