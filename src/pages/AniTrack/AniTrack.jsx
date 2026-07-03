@@ -1,5 +1,5 @@
 import './AniTrack.scss'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo} from 'react'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
 import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
@@ -93,11 +93,11 @@ const AniTrack = () => {
     }
   }
 
-  const onDeleteAnime = async (id) => {
+  const onDeleteAnime = async (anime) => {
     try {
-      await handleDeleteAnime(id)
+      await handleDeleteAnime(anime)
       showToast('Deleted 🗑', 'success')
-    } catch(error) {
+    } catch (error) {
       showToast('Delete failed ❌', 'error')
       throw error
     }
@@ -179,7 +179,6 @@ const AniTrack = () => {
                 mode={view}
                 searchQuery={filters.search}
                 {...item}
-
               />
             ))}
           </ul>

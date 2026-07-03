@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase.js'
+import { uploadPoster, deletePoster } from './storage.js'
 
 export const getAnime = async () => {
   return await supabase
@@ -14,7 +15,6 @@ export const getAnimeById = async (id) => {
     .single()
 }
 
-
 export const addAnime = async (anime) => {
   return await supabase
     .from('anime')
@@ -22,17 +22,45 @@ export const addAnime = async (anime) => {
     .select()
 }
 
-export const deleteAnime = async (id) => {
+export const deleteAnime = async (anime) => {
+  if (anime.image_path) {
+    await deletePoster(anime.image_path)
+  }
+
   return await supabase
     .from('anime')
     .delete()
-    .eq('id', id)
+    .eq('id', anime.id)
 }
 
-export const updateAnime = async (id, updates) => {
+export const updateAnime = async (id, updates, oldImagePath) => {
+  let image_url = updates.image_url
+  let image_path = updates.image_path
+
+  // если выбрали новый постер
+  if (updates.image) {
+    // удалить старый
+    if (oldImagePath) {
+      await deletePoster(oldImagePath)
+    }
+
+    // загрузить новый
+    const uploaded = await uploadPoster(updates.image)
+
+    image_url = uploaded.url
+    image_path = uploaded.path
+  }
+
+  // File в базу отправлять нельзя
+  const { image, ...rest } = updates
+
   return await supabase
     .from('anime')
-    .update(updates)
+    .update({
+      ...rest,
+      image_url,
+      image_path
+    })
     .eq('id', id)
     .select()
 }

@@ -85,6 +85,7 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
     setStatus('')
     setRating(0)
     setNote('')
+    setImage(null)
   }
 
   const handleImageChange = (e) => {

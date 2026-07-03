@@ -71,7 +71,7 @@ const AnimeCard = (props) => {
           className='anime-card__delete'
           aria-label={`Delete ${title}`}
           title={`Delete ${title}`}
-          onClick={() => onDelete(id)}
+          onClick={() => onDelete(props)}
           disabled={isDeleting}
         >
           {isDeleting ? <FiLoader className="spin" /> : <FiTrash2 />}

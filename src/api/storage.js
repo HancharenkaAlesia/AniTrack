@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase.js'
 
 export const uploadPoster = async (file) => {
-  const fileName = `${Date.now()}-${file.name}`
+  const fileName = `${crypto.randomUUID()}.png`
 
   const { error } = await supabase.storage
     .from('posters')
@@ -13,5 +13,18 @@ export const uploadPoster = async (file) => {
     .from('posters')
     .getPublicUrl(fileName)
 
-  return data.publicUrl
+  return {
+    url: data.publicUrl,
+    path: fileName
+  }
+}
+
+export const deletePoster = async (path) => {
+  if (!path) return
+
+  const { error } = await supabase.storage
+    .from('posters')
+    .remove([path])
+
+  if (error) throw error
 }
