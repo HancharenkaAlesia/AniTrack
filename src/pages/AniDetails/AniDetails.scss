@@ -1,8 +1,17 @@
 .anime-details {
   display: grid;
   row-gap: 16px;
-  &__controls {
+
+  &__wrapper {
     display: flex;
     gap: 16px;
+  }
+
+  &__poster {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
   }
 }

@@ -1,0 +1,28 @@
+.upload-area {
+  position: relative;
+  border: 2px dashed #ccc;
+  border-radius: var(--radius);
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+
+  &__body {
+    &--dragging {
+      border-color: var(--color-accent);
+      background: rgba(255, 192, 203, 0.15);
+    }
+  }
+
+  &__preview {
+    width: 200px;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius);
+  }
+  
+  &__remove {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+}

@@ -2,8 +2,10 @@ import './AnimeForm.scss'
 import RatingInput from '../RatingInput/RatingInput.jsx'
 import { useState } from 'react'
 import { options } from '../../data/options.js'
+import UploadArea from '../UploadArea/UploadArea.jsx'
 
-const AnimeForm = ({ initialData, onSubmit, loading }) => {
+const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
+
   const [title, setTitle] = useState(
     initialData?.title || ''
   )
@@ -24,7 +26,7 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
   )
 
   const [image, setImage] = useState(null)
-  const [preview, setPreview] = useState(initialData?.image_url || '')
+  const [removeImage, setRemoveImage] = useState(false)
   const [errors, setErrors] = useState({})
 
   const handleSubmit = async (e) => {
@@ -58,6 +60,7 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
       rating,
       note,
       ...(image && { image }),
+      removeImage,
     }
     setErrors({})
 
@@ -88,19 +91,14 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
     setImage(null)
   }
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
-
-    if (!file) return
-
-    setImage(file)
-    setPreview(URL.createObjectURL(file))
-  }
-
   return (
     <>
       {!initialData && (
         <h2>Add new Anime 🌸</h2>
+      )}
+
+      {initialData && (
+        <h2>Edit anime 🌸</h2>
       )}
 
       <form
@@ -202,18 +200,17 @@ const AnimeForm = ({ initialData, onSubmit, loading }) => {
             name="notes"
           />
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
+        <UploadArea
+          initialImage={initialData?.image_url}
+          onFileChange={(file) => {
+            setImage(file)
+            setRemoveImage(false)
+          }}
+          onRemove={() => {
+            setImage(null)
+            setRemoveImage(true)
+          }}
         />
-        {preview && (
-          <img
-            src={preview}
-            alt="Preview"
-            className="anime-form__preview"
-          />
-        )}
         <button
           type="submit"
           disabled={loading}

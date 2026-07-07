@@ -37,22 +37,25 @@ export const updateAnime = async (id, updates, oldImagePath) => {
   let image_url = updates.image_url
   let image_path = updates.image_path
 
-  // если выбрали новый постер
+  if (updates.removeImage && oldImagePath) {
+    await deletePoster(oldImagePath)
+
+    image_url = null
+    image_path = null
+  }
+
   if (updates.image) {
-    // удалить старый
     if (oldImagePath) {
       await deletePoster(oldImagePath)
     }
 
-    // загрузить новый
     const uploaded = await uploadPoster(updates.image)
 
     image_url = uploaded.url
     image_path = uploaded.path
   }
 
-  // File в базу отправлять нельзя
-  const { image, ...rest } = updates
+  const { image, removeImage, ...rest } = updates
 
   return await supabase
     .from('anime')

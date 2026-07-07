@@ -1,16 +1,24 @@
 import './AddAnimeModal.scss'
 import AnimeForm from '../AnimeForm/AnimeForm.jsx'
 import { useEffect, useRef } from 'react'
-import { FiX } from 'react-icons/fi'
+import { FiEdit, FiX } from 'react-icons/fi'
 
-const AddAnimeModal = ({onSubmit, loading}) => {
+const AddAnimeModal = ({onSubmit, loading, initialData}) => {
   const dialogRef = useRef(null)
+
+  const lockScroll = () => {
+    document.body.style.overflow = 'hidden'
+  }
+
+  const unlockScroll = () => {
+    document.body.style.overflow = ''
+  }
 
   const openModal = () => {
     dialogRef.current.showModal()
     dialogRef.current.classList.add('is-open')
 
-    document.body.style.overflow = 'hidden'
+    lockScroll()
   }
 
   const closeModal = () => {
@@ -20,7 +28,7 @@ const AddAnimeModal = ({onSubmit, loading}) => {
       dialogRef.current.close()
     }, 150)
 
-    document.body.style.overflow = ''
+    unlockScroll()
   }
 
   const handleBackdropClick = (e) => {
@@ -40,10 +48,22 @@ const AddAnimeModal = ({onSubmit, loading}) => {
 
   useEffect(() => {
     return () => {
-      document.body.style.overflow = ''
+      unlockScroll()
     }
   }, [])
 
+  const isEditing = Boolean(initialData)
+
+  const buttonContent = isEditing
+    ? (
+      <>
+        <FiEdit />
+        <span>Edit</span>
+      </>
+    )
+    : (
+      <span>Add anime</span>
+    )
 
   return (
     <>
@@ -51,7 +71,7 @@ const AddAnimeModal = ({onSubmit, loading}) => {
         onClick={openModal}
         type="button"
       >
-        Add anime
+        {buttonContent}
       </button>
       <dialog
         ref={dialogRef}
@@ -69,6 +89,7 @@ const AddAnimeModal = ({onSubmit, loading}) => {
         <AnimeForm
           onSubmit={handleSubmit}
           loading={loading}
+          initialData={initialData}
         />
       </dialog>
     </>

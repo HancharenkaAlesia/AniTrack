@@ -5,6 +5,7 @@ import Rating from '../../components/Rating/Rating.jsx'
 import { useEffect, useState } from 'react'
 import AnimeForm from '../../components/AnimeForm/AnimeForm.jsx'
 import { updateAnime, getAnimeById } from '../../api/anime'
+import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
 
 const AniDetails = () => {
   const navigate = useNavigate()
@@ -58,16 +59,21 @@ const AniDetails = () => {
   return (
     <div className="anime-details">
       <header className="anime-details__header">
-        <h1>{anime.title}</h1>
+        <button
+          onClick={() => navigate(-1)}
+          className='anime-details__back button'>
+          <FiChevronLeft />
+          <span>Back</span>
+        </button>
       </header>
-      {isEditing ? (
-        <AnimeForm
-          initialData={anime}
-          onSubmit={handleUpdateAnime}
-          loading={isUpdating}
-        />
-      ) : (
-        <>
+
+      <div className="anime-details__wrapper">
+        <img
+          className="anime-details__poster"
+          src={anime.image_url || '/src/assets/images/poster.jpg'}
+          alt={anime.title} />
+        <div className="anime-details__content">
+          <h1>{anime.title}</h1>
           <div className="anime-details__info">
             <p>Type: {anime.type}</p>
             <p>Genre: {anime.genre}</p>
@@ -75,24 +81,14 @@ const AniDetails = () => {
             <Rating value={anime.rating} />
           </div>
           <p className='anime-details__note'>{anime.note}</p>
-        </>
-      )}
-        <div className="anime-details__controls">
-          <button
-            onClick={() => navigate(-1)}
-            className='anime-details__back button'>
-            <FiChevronLeft />
-            <span>Back</span>
-          </button>
-          {!isEditing && (
-            <button
-              onClick={() => setIsEditing(prev => !prev)}
-            >
-              <FiEdit />
-              <span>Edit</span>
-            </button>
-          )}
+
+          <AddAnimeModal
+            initialData={anime}
+            onSubmit={handleUpdateAnime}
+            loading={isUpdating}
+          />
         </div>
+      </div>
     </div>
   )
 }
