@@ -60,7 +60,7 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
       rating,
       note,
       ...(image && { image }),
-      removeImage,
+      ...(initialData && { removeImage }),
     }
     setErrors({})
 
