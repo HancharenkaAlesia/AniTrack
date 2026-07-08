@@ -30,6 +30,7 @@ const AniTrack = () => {
     page,
     setPage,
     totalPages,
+    totalAnime,
     loading,
     error,
     isAdding,
@@ -122,37 +123,39 @@ const AniTrack = () => {
       />
 
       <div className="anitrack__controls-panel">
-        <div className="anitrack__controls-panel-wrapper">
-          <SearchForm
-            value={searchInput}
-            onChange={setSearchInput}
-          />
-          <Sort
-            value={filters.sort}
-            onChange={updateParams}
-          />
-          <div className="anitrack__controls-panel-view">
-            <button
-              aria-label="Grid view"
-              className={view === 'grid' ? 'button button--with-icon is-active' : 'button button--with-icon'}
-              onClick={() => setView('grid')}
-            >
-              <FiGrid />
-            </button>
-            <button
-              aria-label="List view"
-              className={view === 'list' ? 'button button--with-icon is-active' : 'button button--with-icon'}
-              onClick={() => setView('list')}
-            >
-              <FiList />
-            </button>
-          </div>
-        </div>
         <FiltersPanel
           filters={filters}
           onFilterChange={updateParams}
           filtersReset={filtersReset}
         />
+        <div className="anitrack__controls-panel-wrapper">
+          <SearchForm
+            value={searchInput}
+            onChange={setSearchInput}
+          />
+          <div className="anitrack__controls-panel-wrap">
+            <Sort
+              value={filters.sort}
+              onChange={updateParams}
+            />
+            <div className="anitrack__controls-panel-view">
+              <button
+                aria-label="Grid view"
+                className={view === 'grid' ? 'button button--with-icon is-active' : 'button button--with-icon'}
+                onClick={() => setView('grid')}
+              >
+                <FiGrid />
+              </button>
+              <button
+                aria-label="List view"
+                className={view === 'list' ? 'button button--with-icon is-active' : 'button button--with-icon'}
+                onClick={() => setView('list')}
+              >
+                <FiList />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="anitrack__body">
         {loading && (
@@ -187,11 +190,17 @@ const AniTrack = () => {
             ))}
           </ul>
         )}
-        <Pagination
-          page={page}
-          setPage={setPage}
-          totalPages={totalPages}
-        />
+
+        <p className="anitrack__counter">Your collection: {totalAnime}</p>
+
+        {totalPages > 1 && (
+          <Pagination
+            page={page}
+            setPage={setPage}
+            totalPages={totalPages}
+          />
+        )}
+
       </div>
       {toast && (
         <Toast toast={toast} />

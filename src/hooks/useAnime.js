@@ -14,6 +14,8 @@ const useAnime = () => {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
+  const [totalAnime, setTotalAnime] = useState(0)
+
   const handleAddAnime = async (newAnime) => {
     setIsAdding(true)
 
@@ -29,11 +31,16 @@ const useAnime = () => {
 
       delete animeToSave.image
 
-      const { data, error } = await addAnime(animeToSave)
+      const { error } = await addAnime(animeToSave)
 
       if (error) throw error
 
-      setAnime(prev => [data[0], ...prev])
+      setTotalAnime(prev => prev + 1)
+      setPage(1)
+      await fetchAnime()
+
+    } catch (error) {
+      console.error(error)
     } finally {
       setIsAdding(false)
     }
@@ -47,7 +54,13 @@ const useAnime = () => {
 
       if (error) throw error
 
-      setAnime(prev => prev.filter(item => item.id !== anime.id))
+      setTotalAnime(prev => prev - 1)
+
+      const data = await fetchAnime()
+
+      if (data.length === 0 && page > 1) {
+        setPage(prev => prev - 1)
+      }
 
     } catch (error) {
       console.error(error)
@@ -56,28 +69,34 @@ const useAnime = () => {
     }
   }
 
-  useEffect(() => {
-    const fetchAnime = async () => {
-      setLoading(true)
-      setError(null)
-      try {
-        const { data, error, count } = await getAnime(page, PAGE_SIZE)
+  const fetchAnime = async (currentPage = page) => {
+    setLoading(true)
+    setError(null)
+    setAnime([])
 
-        if (error) {
-          throw error
-        }
+    try {
+      const { data, error, count } = await getAnime(currentPage, PAGE_SIZE)
 
-        setAnime(data)
-        setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)))
-
-      } catch (error) {
-        console.error(error)
-        setError(error.message)
-      } finally {
-        setLoading(false)
+      if (error) {
+        throw error
       }
-    }
 
+      setAnime(data)
+      setTotalAnime(count)
+      setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)))
+
+      return data
+
+    } catch (error) {
+      console.error(error)
+      setError(error.message)
+      return []
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
     fetchAnime()
   }, [page])
 
@@ -87,6 +106,7 @@ const useAnime = () => {
     error,
     isAdding,
     deletingId,
+    totalAnime,
     handleAddAnime,
     handleDeleteAnime,
     page,

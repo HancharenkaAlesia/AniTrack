@@ -34,4 +34,16 @@
     width: 160px;
     border-radius: var(--radius);
   }
+
+  &__counter {
+    font-size: 12px;
+  }
+
+  @media(max-width: 768px) {
+    gap: 10px;
+    &__wrapper {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
 }

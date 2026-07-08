@@ -25,6 +25,15 @@
       display: flex;
       justify-content: space-between;
       gap: 16px;
+      > * {
+        flex: 1;
+      }
+    }
+
+    &-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: center;
     }
     &-view {
       flex-shrink: 0;
@@ -34,6 +43,17 @@
       button {
         flex-shrink: 0;
       }
+    }
+  }
+
+  &__counter {
+    font-size: 12px;
+    margin-block: 8px 0;
+  }
+
+  @media(max-width: 768px) {
+    &__controls-panel-wrapper {
+      flex-direction: column;
     }
   }
 }

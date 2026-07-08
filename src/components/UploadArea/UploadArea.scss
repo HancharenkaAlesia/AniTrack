@@ -24,5 +24,15 @@
     position: absolute;
     right: 15px;
     top: 15px;
+    width: 32px;
+    height: 32px;
+  }
+
+  @media(max-width: 768px) {
+    padding: 10px;
+    &__remove {
+      right: 0px;
+      top: 5px;
+    }
   }
 }

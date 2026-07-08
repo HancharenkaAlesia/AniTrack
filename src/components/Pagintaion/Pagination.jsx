@@ -1,26 +1,43 @@
 import './Pagintaion.scss'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
 const Pagintaion = ({page, totalPages, setPage}) => {
+  const pages = []
+
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i)
+  }
+
   return (
-    <>
+    <div className="pagination">
+
       <button
-        onClick={() => setPage(page - 1)}
         disabled={page === 1}
+        onClick={() => setPage(page - 1)}
+        className="button button--with-icon"
       >
-        Previous
+        <FiChevronLeft />
       </button>
 
-      <span>
-        {page} / {totalPages}
-      </span>
+      {pages.map(item => (
+        <button
+          key={item}
+          className={`button button--with-icon ${page === item ? 'is-active' : ''}`}
+          onClick={() => setPage(item)}
+        >
+          {item}
+        </button>
+      ))}
 
       <button
-        onClick={() => setPage(page + 1)}
         disabled={page === totalPages}
+        onClick={() => setPage(page + 1)}
+        className="button button--with-icon"
       >
-        Next
+        <FiChevronRight />
       </button>
-    </>
+
+    </div>
   )
 }
 

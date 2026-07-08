@@ -1,9 +1,13 @@
 import './RatingInput.scss'
 import { GiFlowers } from 'react-icons/gi'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const RatingInput = ({ value, onChange }) => {
   const [hoverValue, setHoverValue] = useState(0)
+
+  useEffect(() => {
+    setHoverValue(0)
+  }, [value])
 
   return (
     <div className="rating-input">

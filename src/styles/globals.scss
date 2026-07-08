@@ -1,7 +1,14 @@
 html {
+  * {
+    box-sizing: border-box;
+  }
   body {
     font-family: 'Zen Maru Gothic', sans-serif;
     padding: 100px 30px;
+
+    @media(max-width: 768px) {
+      padding: 30px 15px;
+    }
   }
 
   *:focus, *:focus-visible {
@@ -17,6 +24,10 @@ html {
     color: var(--color-text);
     margin: 0;
     text-align: center;
+
+    @media(max-width: 768px) {
+      font-size: 24px;
+    }
   }
 
   h2 {
@@ -107,7 +118,7 @@ html {
     position: relative;
     margin: 0 auto;
     width: 100%;
-    max-width: 700px;
+    max-width: 780px;
 
     background: linear-gradient(
         180deg,
@@ -118,6 +129,10 @@ html {
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
     padding: 40px;
+
+    @media(max-width: 768px) {
+      padding: 20px;
+    }
   }
 
   .error {

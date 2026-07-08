@@ -5,13 +5,62 @@
   &__wrapper {
     display: flex;
     gap: 16px;
+    align-items: flex-start;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__rating {
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    text-align: left;
   }
 
   &__poster {
-    width: 300px;
-    height: auto;
-    object-fit: cover;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-card);
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 280px;
+    max-height: 500px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__note {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  @media(max-width: 768px) {
+    row-gap: 10px;
+
+    &__wrapper {
+      flex-direction: column;
+    }
+    &__poster {
+      margin: 0 auto;
+    }
   }
 }

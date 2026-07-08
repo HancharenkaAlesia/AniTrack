@@ -71,16 +71,6 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
     }
   }
 
-  const clearError = (field) => {
-    if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
-    }
-  }
-
   const resetForm = () => {
     setTitle('')
     setType('')
@@ -89,6 +79,16 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
     setRating(0)
     setNote('')
     setImage(null)
+  }
+
+  const clearError = (field) => {
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev }
+        delete newErrors[field]
+        return newErrors
+      })
+    }
   }
 
   return (
@@ -193,12 +193,19 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
               )}
             </div>
           </div>
-          <textarea
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Your notes"
-            name="notes"
-          />
+          <div className="anime-form__textarea">
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Your notes"
+              name="notes"
+              maxLength={300}
+            />
+            <div className="anime-form__counter">
+              {note.length}/300
+            </div>
+          </div>
+
         </div>
         <UploadArea
           initialImage={initialData?.image_url}

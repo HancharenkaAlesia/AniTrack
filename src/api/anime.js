@@ -8,6 +8,7 @@ export const getAnime = async ( page, pageSize = 6) => {
   return await supabase
       .from('anime')
       .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
       .range(from, to)
 }
 

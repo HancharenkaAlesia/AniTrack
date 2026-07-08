@@ -2,6 +2,7 @@ import './AnimeCard.scss'
 import { FiTrash2, FiLoader } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { STATUS_VARIANTS } from '../../constants/badgeVariants'
+import Badge from '../Badge/Badge.jsx'
 
 const AnimeCard = (props) => {
   const {
@@ -55,15 +56,9 @@ const AnimeCard = (props) => {
           <div className="anime-card__rating">🌸 {rating}</div>
         </div>
         <div className='anime-card__badges'>
-          <span className="anime-card__badge anime-card__badge--genre">
-            {genre}
-          </span>
-          <span className="anime-card__badge anime-card__badge--type">
-            {type}
-          </span>
-          <span className={`anime-card__badge anime-card__badge--${statusVariant}`}>
-            {status}
-          </span>
+          <Badge variant="genre">{genre}</Badge>
+          <Badge variant="type">{type}</Badge>
+          <Badge variant={statusVariant}>{status}</Badge>
         </div>
       </Link>
       <div className="anime-card__actions">
