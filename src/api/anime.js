@@ -1,10 +1,14 @@
 import { supabase } from '../lib/supabase.js'
 import { uploadPoster, deletePoster } from './storage.js'
 
-export const getAnime = async () => {
+export const getAnime = async ( page, pageSize = 6) => {
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
+
   return await supabase
-    .from('anime')
-    .select('*')
+      .from('anime')
+      .select('*', { count: 'exact' })
+      .range(from, to)
 }
 
 export const getAnimeById = async (id) => {

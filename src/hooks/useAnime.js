@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { getAnime, addAnime, deleteAnime } from '../api/anime.js'
-import { deletePoster, uploadPoster } from '../api/storage'
+import { uploadPoster } from '../api/storage'
+
+const PAGE_SIZE = 6
 
 const useAnime = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -8,6 +10,9 @@ const useAnime = () => {
   const [anime, setAnime] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   const handleAddAnime = async (newAnime) => {
     setIsAdding(true)
@@ -56,13 +61,15 @@ const useAnime = () => {
       setLoading(true)
       setError(null)
       try {
-        const { data, error } = await getAnime()
+        const { data, error, count } = await getAnime(page, PAGE_SIZE)
 
         if (error) {
           throw error
         }
 
         setAnime(data)
+        setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)))
+
       } catch (error) {
         console.error(error)
         setError(error.message)
@@ -72,7 +79,7 @@ const useAnime = () => {
     }
 
     fetchAnime()
-  }, [])
+  }, [page])
 
   return {
     anime,
@@ -81,7 +88,10 @@ const useAnime = () => {
     isAdding,
     deletingId,
     handleAddAnime,
-    handleDeleteAnime
+    handleDeleteAnime,
+    page,
+    setPage,
+    totalPages,
   }
 }
 

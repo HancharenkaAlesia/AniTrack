@@ -14,6 +14,7 @@ import useToast from '../../hooks/useToast.js'
 import Toast from '../../components/Toast/Toast.jsx'
 import Sort from '../../components/Sort/Sort.jsx'
 import EmptyState from '../../components/EmptyState/EmptyState.jsx'
+import Pagination from '../../components/Pagintaion/Pagination.jsx'
 
 const AniTrack = () => {
   const {
@@ -26,6 +27,9 @@ const AniTrack = () => {
 
   const {
     anime,
+    page,
+    setPage,
+    totalPages,
     loading,
     error,
     isAdding,
@@ -183,6 +187,11 @@ const AniTrack = () => {
             ))}
           </ul>
         )}
+        <Pagination
+          page={page}
+          setPage={setPage}
+          totalPages={totalPages}
+        />
       </div>
       {toast && (
         <Toast toast={toast} />
