@@ -1,7 +1,7 @@
 import './AddAnimeModal.scss'
 import AnimeForm from '../AnimeForm/AnimeForm.jsx'
 import { useEffect, useRef } from 'react'
-import { FiEdit, FiX } from 'react-icons/fi'
+import { FiEdit, FiX, FiPlus } from 'react-icons/fi'
 
 const AddAnimeModal = ({onSubmit, loading, initialData}) => {
   const dialogRef = useRef(null)
@@ -62,7 +62,10 @@ const AddAnimeModal = ({onSubmit, loading, initialData}) => {
       </>
     )
     : (
-      <span>Add anime</span>
+      <>
+        <FiPlus />
+        <span>Add anime</span>
+      </>
     )
 
   return (

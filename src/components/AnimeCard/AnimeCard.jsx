@@ -45,11 +45,13 @@ const AnimeCard = (props) => {
 
   return (
     <li className={`anime-card anime-card--${mode}`}>
-      <img
-        className="anime-card__poster"
-        src={image_url || '/src/assets/images/poster.jpg'}
-        alt={title}
-      />
+      <div className="anime-card__poster">
+        <img
+          src={image_url || '/src/assets/images/poster.jpg'}
+          alt={title}
+        />
+        <div className="anime-card__overlay"></div>
+      </div>
       <Link to={`/anime/${id}`} className="anime-card__content">
         <div className="anime-card__header">
           <h2 className="anime-card__name">{highlightText(title, searchQuery)}</h2>

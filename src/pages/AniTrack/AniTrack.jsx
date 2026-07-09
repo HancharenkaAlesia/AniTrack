@@ -116,44 +116,41 @@ const AniTrack = () => {
     <div className="anitrack">
       <header className="anitrack__header">
         <h1 className="anitrack__title">AniTrack 🌸</h1>
+        <AddAnimeModal
+          onSubmit={onAddAnime}
+          loading={isAdding}
+        />
       </header>
-      <AddAnimeModal
-        onSubmit={onAddAnime}
-        loading={isAdding}
-      />
-
       <div className="anitrack__controls-panel">
-        <FiltersPanel
-          filters={filters}
-          onFilterChange={updateParams}
-          filtersReset={filtersReset}
+        <SearchForm
+          value={searchInput}
+          onChange={setSearchInput}
         />
         <div className="anitrack__controls-panel-wrapper">
-          <SearchForm
-            value={searchInput}
-            onChange={setSearchInput}
+          <Sort
+            value={filters.sort}
+            onChange={updateParams}
           />
-          <div className="anitrack__controls-panel-wrap">
-            <Sort
-              value={filters.sort}
-              onChange={updateParams}
-            />
-            <div className="anitrack__controls-panel-view">
-              <button
-                aria-label="Grid view"
-                className={view === 'grid' ? 'button button--with-icon is-active' : 'button button--with-icon'}
-                onClick={() => setView('grid')}
-              >
-                <FiGrid />
-              </button>
-              <button
-                aria-label="List view"
-                className={view === 'list' ? 'button button--with-icon is-active' : 'button button--with-icon'}
-                onClick={() => setView('list')}
-              >
-                <FiList />
-              </button>
-            </div>
+          <FiltersPanel
+            filters={filters}
+            onFilterChange={updateParams}
+            filtersReset={filtersReset}
+          />
+          <div className="anitrack__controls-panel-view">
+            <button
+              aria-label="Grid view"
+              className={view === 'grid' ? 'button button--with-icon is-active' : 'button button--with-icon'}
+              onClick={() => setView('grid')}
+            >
+              <FiGrid />
+            </button>
+            <button
+              aria-label="List view"
+              className={view === 'list' ? 'button button--with-icon is-active' : 'button button--with-icon'}
+              onClick={() => setView('list')}
+            >
+              <FiList />
+            </button>
           </div>
         </div>
       </div>
@@ -191,7 +188,7 @@ const AniTrack = () => {
           </ul>
         )}
 
-        <p className="anitrack__counter">Your collection: {totalAnime}</p>
+        <p className="anitrack__counter">🌸 {totalAnime} anime in your collection</p>
 
         {totalPages > 1 && (
           <Pagination

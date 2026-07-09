@@ -53,8 +53,8 @@ html {
     background: var(--color-primary);
     color: white;
     cursor: pointer;
-    border: 2px solid var(--color-border);
     font-size: 18px;
+    border: none;
     padding: 7px 10px;
     border-radius: var(--radius);
     transition-duration: 0.2s;
@@ -89,7 +89,7 @@ html {
     }
 
     &.is-active {
-      background: var(--color-primary-dark);
+      background: var(--color-primary);
       border-color: var(--color-surface);
       color: var(--color-surface);
     }
@@ -102,11 +102,16 @@ html {
     font-size: 16px;
     background-color: var(--color-surface);
     border: 2px solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     font-family: 'Zen Maru Gothic', sans-serif;
     &.is-error {
       border: 2px solid var(--color-error);
     }
+  }
+
+  select {
+    font-size: 14px;
+    padding: 10px;
   }
 
   textarea {

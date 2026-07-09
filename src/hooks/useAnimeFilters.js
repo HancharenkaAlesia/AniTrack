@@ -40,7 +40,15 @@ const useAnimeFilters = () => {
   }, [filters.search])
 
   const filtersReset = () => {
-    setSearchParams({})
+    setSearchParams(prev => {
+      const next = Object.fromEntries(prev)
+
+      delete next.type
+      delete next.genre
+      delete next.status
+
+      return next
+    })
   }
 
   return {

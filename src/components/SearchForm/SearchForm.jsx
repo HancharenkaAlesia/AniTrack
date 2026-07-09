@@ -11,6 +11,7 @@ const SearchForm = ({onChange, value}) => {
       <input
         onChange={(e) => onChange(e.target.value)}
         value={value}
+        placeholder="Search anime..."
         type="search"
         name="search" />
     </div>

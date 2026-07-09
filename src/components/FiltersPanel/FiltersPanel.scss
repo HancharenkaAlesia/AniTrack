@@ -1,12 +1,30 @@
-.filters-panel {
-  display: flex;
-  gap: 16px;
-  button {
-    flex-shrink: 0;
+.filters {
+  position: relative;
+
+  &__panel {
+    display: grid;
+    row-gap: 5px;
+    width: 200px;
+
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 150;
+
+    padding: 10px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius);
   }
 
   @media(max-width: 768px) {
-    flex-direction: column;
-    gap: 10px;
+    &__toggle {
+      span {
+        display: none;
+      }
+    }
+
+    &__panel {
+      transform: translateX(-35%);
+    }
   }
 }
