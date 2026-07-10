@@ -4,7 +4,13 @@ import { uploadPoster } from '../api/storage'
 
 const PAGE_SIZE = 6
 
-const useAnime = () => {
+const useAnime = (filters = {
+  type: '',
+  genre: '',
+  status: '',
+  search: '',
+  sort: '',
+}) => {
   const [isAdding, setIsAdding] = useState(false)
   const [deletingId, setDeletingId] = useState(null)
   const [anime, setAnime] = useState([])
@@ -75,7 +81,7 @@ const useAnime = () => {
     setAnime([])
 
     try {
-      const { data, error, count } = await getAnime(currentPage, PAGE_SIZE)
+      const { data, error, count } = await getAnime(currentPage, PAGE_SIZE, filters)
 
       if (error) {
         throw error
@@ -98,7 +104,12 @@ const useAnime = () => {
 
   useEffect(() => {
     fetchAnime()
-  }, [page])
+  }, [page,
+    filters.type,
+    filters.genre,
+    filters.status,
+    filters.search,
+    filters.sort,])
 
   return {
     anime,

@@ -1,41 +1,15 @@
 import './AddAnimeModal.scss'
 import AnimeForm from '../AnimeForm/AnimeForm.jsx'
-import { useEffect, useRef } from 'react'
 import { FiEdit, FiX, FiPlus } from 'react-icons/fi'
+import useDialog from '../../hooks/useDialog.js'
 
 const AddAnimeModal = ({onSubmit, loading, initialData}) => {
-  const dialogRef = useRef(null)
-
-  const lockScroll = () => {
-    document.body.style.overflow = 'hidden'
-  }
-
-  const unlockScroll = () => {
-    document.body.style.overflow = ''
-  }
-
-  const openModal = () => {
-    dialogRef.current.showModal()
-    dialogRef.current.classList.add('is-open')
-
-    lockScroll()
-  }
-
-  const closeModal = () => {
-    dialogRef.current.classList.remove('is-open')
-
-    setTimeout(() => {
-      dialogRef.current.close()
-    }, 150)
-
-    unlockScroll()
-  }
-
-  const handleBackdropClick = (e) => {
-    if (e.target === dialogRef.current) {
-      closeModal()
-    }
-  }
+  const {
+    dialogRef,
+    openModal,
+    closeModal,
+    handleBackdropClick,
+  } = useDialog()
 
   const handleSubmit = async (formData) => {
     try {
@@ -45,12 +19,6 @@ const AddAnimeModal = ({onSubmit, loading, initialData}) => {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-    return () => {
-      unlockScroll()
-    }
-  }, [])
 
   const isEditing = Boolean(initialData)
 

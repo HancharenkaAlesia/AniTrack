@@ -1,15 +1,58 @@
 import { supabase } from '../lib/supabase.js'
 import { uploadPoster, deletePoster } from './storage.js'
 
-export const getAnime = async ( page, pageSize = 6) => {
+export const getAnime = async ( page, pageSize = 6, filters) => {
   const from = (page - 1) * pageSize
   const to = from + pageSize - 1
 
-  return await supabase
-      .from('anime')
-      .select('*', { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .range(from, to)
+  let query = supabase
+    .from('anime')
+    .select('*', { count: 'exact' })
+
+  if (filters.type) {
+    query = query.eq('type', filters.type)
+  }
+
+  if (filters.genre) {
+    query = query.eq('genre', filters.genre)
+  }
+
+  if (filters.status) {
+    query = query.eq('status', filters.status)
+  }
+
+  if (filters.search) {
+    query = query.ilike('title', `%${filters.search}%`)
+  }
+
+  switch (filters.sort) {
+    case 'oldest':
+      query = query.order('created_at', { ascending: true })
+      break
+
+    case 'rating-desc':
+      query = query.order('rating', { ascending: false })
+      break
+
+    case 'rating-asc':
+      query = query.order('rating', { ascending: true })
+      break
+
+    case 'title-asc':
+      query = query.order('title', { ascending: true })
+      break
+
+    case 'title-desc':
+      query = query.order('title', { ascending: false })
+      break
+
+    default:
+      query = query.order('created_at', { ascending: false })
+  }
+
+  query = query.range(from, to)
+
+  return await query
 }
 
 export const getAnimeById = async (id) => {

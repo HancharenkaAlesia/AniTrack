@@ -1,0 +1,21 @@
+.confirm-dialog {
+  width: min(300px, 90vw);
+
+  &__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  &__message {
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    column-gap: 6px;
+  }
+}

@@ -3,18 +3,16 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { FiChevronLeft, FiLoader, FiTrash2 } from 'react-icons/fi'
 import Rating from '../../components/Rating/Rating.jsx'
 import { useEffect, useState } from 'react'
-import { updateAnime, getAnimeById } from '../../api/anime'
+import { updateAnime, getAnimeById, deleteAnime } from '../../api/anime'
 import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
-import useAnime from '../../hooks/useAnime.js'
 import Badge from '../../components/Badge/Badge.jsx'
 import { STATUS_VARIANTS } from '../../constants/badgeVariants.js'
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.jsx'
 
 const AniDetails = () => {
   const navigate = useNavigate()
   const [anime, setAnime] = useState(null)
-  const [expanded, setExpanded] = useState(false)
   const { id } = useParams()
-  const { handleDeleteAnime } = useAnime();
 
   useEffect(() => {
     const fetchOne = async () => {
@@ -59,19 +57,14 @@ const AniDetails = () => {
     }
   }
 
-  const handleDelete = async (anime) => {
+  const handleDelete = async () => {
     setIsDeleting(true)
 
     try {
-      const confirmed = window.confirm(
-        'Are you sure you want to delete this anime?'
-      )
+      const { error } = await deleteAnime(anime)
 
-      if (!confirmed) {
-        return
-      }
+      if (error) throw error
 
-      await handleDeleteAnime(anime)
       navigate('/')
     } catch (error) {
       console.error(error)
@@ -91,15 +84,15 @@ const AniDetails = () => {
           className='anime-details__back button button--with-icon'>
           <FiChevronLeft />
         </button>
-        <button
-          className='anime-details__delete button button--with-icon'
-          aria-label={`Delete ${anime.title}`}
-          title={`Delete ${anime.title}`}
-          onClick={() => handleDelete(anime)}
-          disabled={isDeleting}
-        >
-          {isDeleting ? <FiLoader className="spin" /> : <FiTrash2 />}
-        </button>
+        <ConfirmModal
+          className="button button--with-icon"
+          title="Delete anime?"
+          message={`"${anime.title}" will be permanently deleted.`}
+          confirmText="Delete"
+          loading={isDeleting}
+          onConfirm={handleDelete}
+          trigger={<FiTrash2 />}
+        />
       </header>
 
       <div className="anime-details__wrapper">

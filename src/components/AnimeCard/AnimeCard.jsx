@@ -3,6 +3,7 @@ import { FiTrash2, FiLoader } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { STATUS_VARIANTS } from '../../constants/badgeVariants'
 import Badge from '../Badge/Badge.jsx'
+import ConfirmModal from '../ConfirmModal/ConfirmModal.jsx'
 
 const AnimeCard = (props) => {
   const {
@@ -64,15 +65,15 @@ const AnimeCard = (props) => {
         </div>
       </Link>
       <div className="anime-card__actions">
-        <button
-          className='anime-card__delete'
-          aria-label={`Delete ${title}`}
-          title={`Delete ${title}`}
-          onClick={() => onDelete(props)}
-          disabled={isDeleting}
-        >
-          {isDeleting ? <FiLoader className="spin" /> : <FiTrash2 />}
-        </button>
+        <ConfirmModal
+          className="anime-card__delete"
+          title={`Delete "${title}"?`}
+          message="This action cannot be undone."
+          confirmText="Delete"
+          loading={isDeleting}
+          onConfirm={() => onDelete(props)}
+          trigger={<FiTrash2 />}
+        />
       </div>
     </li>
   )

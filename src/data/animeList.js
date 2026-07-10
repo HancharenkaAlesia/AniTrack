@@ -4,7 +4,7 @@ const animeList = [
     title: "Frieren",
     type: "anime",
     genre: "Fantasy",
-    status: "watching",
+    status: "",
     rating: 5,
     note: "Very cozy."
   },

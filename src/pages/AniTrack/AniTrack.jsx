@@ -1,5 +1,4 @@
 import './AniTrack.scss'
-import { useMemo} from 'react'
 import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
 import SearchForm from '../../components/SearchForm/SearchForm.jsx'
 import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
@@ -15,6 +14,7 @@ import Toast from '../../components/Toast/Toast.jsx'
 import Sort from '../../components/Sort/Sort.jsx'
 import EmptyState from '../../components/EmptyState/EmptyState.jsx'
 import Pagination from '../../components/Pagintaion/Pagination.jsx'
+import { useEffect } from 'react'
 
 const AniTrack = () => {
   const {
@@ -37,7 +37,7 @@ const AniTrack = () => {
     deletingId,
     handleAddAnime,
     handleDeleteAnime
-  } = useAnime()
+  } = useAnime(filters)
 
   const {
     toast,
@@ -45,48 +45,6 @@ const AniTrack = () => {
   } = useToast()
 
   const [view, setView] = useLocalStorage('list-view', 'grid')
-  const filteredAnime = useMemo(() => {
-    const filtered =  anime.filter((anime) => {
-      const matchesSearch = anime.title.toLowerCase().includes(filters.search.toLowerCase())
-
-      const matchesType = !filters.type || anime.type === filters.type
-      const matchesGenre = !filters.genre || anime.genre === filters.genre
-      const matchesStatus = !filters.status || anime.status === filters.status
-
-      return (
-        matchesSearch &&
-        matchesType &&
-        matchesGenre &&
-        matchesStatus
-      )
-    })
-
-    const sorted = [...filtered]
-
-    switch (filters.sort) {
-      case 'newest':
-        sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-        break
-      case 'oldest':
-        sorted.sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-        break
-      case 'rating-desc':
-        sorted.sort((a, b) => b.rating - a.rating)
-        break
-      case 'rating-asc':
-        sorted.sort((a, b) => a.rating - b.rating)
-        break
-      case 'title-asc':
-        sorted.sort((a, b) => a.title.localeCompare(b.title))
-        break
-      case 'title-desc':
-        sorted.sort((a, b) => b.title.localeCompare(a.title))
-        break
-      default: break
-    }
-
-    return sorted
-  }, [filters.search, filters.type, filters.genre, filters.status, filters.sort,  anime])
 
   const onAddAnime = async (data) => {
     try {
@@ -109,8 +67,18 @@ const AniTrack = () => {
   }
 
   const isInitialEmpty = !loading && !error && anime.length === 0
-  const isNoResults = !loading && !error && anime.length > 0 && filteredAnime.length === 0
-  const hasResults = filteredAnime.length > 0
+  const isNoResults = !loading && !error && anime.length > 0 && anime.length === 0
+  const hasResults = anime.length > 0
+
+  useEffect(() => {
+    setPage(1)
+  }, [
+    filters.search,
+    filters.type,
+    filters.genre,
+    filters.status,
+    filters.sort,
+  ])
 
   return (
     <div className="anitrack">
@@ -175,7 +143,7 @@ const AniTrack = () => {
         )}
         {hasResults && (
           <ul className={`anitrack__list anitrack__list--${view}`}>
-            {filteredAnime.map((item) => (
+            {anime.map((item) => (
               <AnimeCard
                 key={item.id}
                 onDelete={onDeleteAnime}
