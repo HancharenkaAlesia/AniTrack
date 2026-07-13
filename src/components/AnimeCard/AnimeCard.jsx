@@ -29,7 +29,7 @@ const AnimeCard = (props) => {
     <li className={`anime-card anime-card--${mode}`}>
       <div className="anime-card__poster">
         <img
-          src={image_url || '/src/assets/images/poster.jpg'}
+          src={image_url || '/images/poster.jpg'}
           alt={title}
         />
         <div className="anime-card__overlay"></div>

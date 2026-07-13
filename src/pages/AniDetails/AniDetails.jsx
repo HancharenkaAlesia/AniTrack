@@ -98,7 +98,7 @@ const AniDetails = () => {
       <div className="anime-details__wrapper">
         <div className="anime-details__poster">
           <img
-            src={anime.image_url || '/src/assets/images/poster.jpg'}
+            src={anime.image_url || '/images/poster.jpg'}
             alt={anime.title} />
         </div>
         <div className="anime-details__content">
