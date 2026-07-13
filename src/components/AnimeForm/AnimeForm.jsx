@@ -1,10 +1,10 @@
 import './AnimeForm.scss'
 import RatingInput from '../RatingInput/RatingInput.jsx'
 import { useState } from 'react'
-import { options } from '../../data/options.js'
+import { options } from '@/data/options.js'
 import UploadArea from '../UploadArea/UploadArea.jsx'
 
-const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
+const AnimeForm = ({ initialData, onSubmit, loading }) => {
 
   const [title, setTitle] = useState(
     initialData?.title || ''
@@ -27,7 +27,14 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
 
   const [image, setImage] = useState(null)
   const [removeImage, setRemoveImage] = useState(false)
+  const [uploadKey, setUploadKey] = useState(0)
   const [errors, setErrors] = useState({})
+
+  const submitText = loading
+    ? 'Loading...'
+    : initialData
+      ? 'Save changes'
+      : 'Add anime'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -52,7 +59,7 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
       return
     }
 
-    const anime = {
+    const animeData = {
       title,
       type,
       genre,
@@ -64,7 +71,7 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
     }
     setErrors({})
 
-    await onSubmit(anime)
+    await onSubmit(animeData)
 
     if (!initialData) {
       resetForm()
@@ -79,6 +86,8 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
     setRating(0)
     setNote('')
     setImage(null)
+
+    setUploadKey(prev => prev + 1)
   }
 
   const clearError = (field) => {
@@ -93,13 +102,9 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
 
   return (
     <>
-      {!initialData && (
-        <h2>Add new Anime 🌸</h2>
-      )}
-
-      {initialData && (
-        <h2>Edit anime 🌸</h2>
-      )}
+      <h2>
+        {initialData ? 'Edit anime 🌸' : 'Add new Anime 🌸'}
+      </h2>
 
       <form
         className="anime-form"
@@ -208,6 +213,7 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
 
         </div>
         <UploadArea
+          key={uploadKey}
           initialImage={initialData?.image_url}
           onFileChange={(file) => {
             setImage(file)
@@ -222,15 +228,7 @@ const AnimeForm = ({ initialData, onSubmit, loading, mode = '' }) => {
           type="submit"
           disabled={loading}
         >
-          {loading ? (
-              'Loading...'
-            )
-            : initialData ? (
-                'Save changes'
-              )
-              : (
-                'Add anime'
-              )}
+          {submitText}
         </button>
       </form>
     </>

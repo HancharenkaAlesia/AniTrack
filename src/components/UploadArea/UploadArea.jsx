@@ -1,13 +1,13 @@
 import './UploadArea.scss'
 import { useRef, useState, useEffect } from 'react'
 
+const MAX_SIZE = 5 * 1024 * 1024 // 5 MB
+
 const UploadArea = ({onFileChange, initialImage, onRemove}) => {
   const inputRef = useRef(null)
   const [isDragging, setIsDragging] = useState(false)
   const [preview, setPreview] = useState(initialImage || '')
   const [error, setError] = useState('')
-
-  const MAX_SIZE = 5 * 1024 * 1024 // 5 MB
 
   const isValidSize = (file) => {
     return file.size <= MAX_SIZE
@@ -24,13 +24,13 @@ const UploadArea = ({onFileChange, initialImage, onRemove}) => {
   const handleFile = (selectedFile) => {
     if (!selectedFile) return
 
-    if (!isValidSize(selectedFile)) {
-      setError('Maximum file size is 5 MB')
+    if (!isImage(selectedFile)) {
+      setError('Only image files are allowed')
       return
     }
 
-    if (!isImage(selectedFile)) {
-      setError('Only image files are allowed')
+    if (!isValidSize(selectedFile)) {
+      setError('Maximum file size is 5 MB')
       return
     }
 
@@ -76,9 +76,9 @@ const UploadArea = ({onFileChange, initialImage, onRemove}) => {
     }
   }
 
-  const uploadClass = isDragging
-    ? 'upload-area__body upload-area--dragging'
-    : 'upload-area__body'
+  const uploadClass = `upload-area__body ${
+    isDragging ? 'upload-area--dragging' : ''
+  }`
 
   useEffect(() => {
     if (!preview.startsWith('blob:')) return
@@ -113,6 +113,7 @@ const UploadArea = ({onFileChange, initialImage, onRemove}) => {
 
             <button
               type="button"
+              aria-label="Remove image"
               className="upload-area__remove button button--with-icon"
               onClick={handleRemove}
             >
@@ -120,7 +121,7 @@ const UploadArea = ({onFileChange, initialImage, onRemove}) => {
             </button>
           </>
         ) : (
-          'Click or drop image'
+          'Click or drag an image here'
         )}
       </div>
       <input

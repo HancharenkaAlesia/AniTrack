@@ -14,8 +14,8 @@ const useDialog = () => {
   const openModal = () => {
     if (!dialogRef.current) return
 
-    dialogRef.current?.showModal()
-    dialogRef.current?.classList.add('is-open')
+    dialogRef.current.showModal()
+    dialogRef.current.classList.add('is-open')
 
     lockScroll()
   }

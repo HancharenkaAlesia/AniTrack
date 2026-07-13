@@ -1,5 +1,5 @@
 import './FiltersPanel.scss'
-import { options } from '../../data/options.js'
+import { options } from '@/data/options.js'
 import { FiChevronDown, FiChevronUp, FiFilter } from 'react-icons/fi'
 import { useState, useRef, useEffect  } from 'react'
 
@@ -40,6 +40,7 @@ const FiltersPanel = ({filters, onFilterChange, filtersReset}) => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+
 
   return (
     <div

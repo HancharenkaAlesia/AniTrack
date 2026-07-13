@@ -154,11 +154,24 @@ html {
     width: 100%;
     max-width: 780px;
 
-    background: linear-gradient(
-        180deg,
-        var(--color-bg),
-        var(--color-bg-secondary)
-    );
+    background:
+      radial-gradient(
+          circle at top left,
+          #ffe2ec 0%,
+          transparent 45%
+      ),
+      radial-gradient(
+          circle at bottom right,
+          #fff0f6 0%,
+          transparent 50%
+      ),
+      var(--color-bg);
+
+    background-size: 200% 200%;
+
+    animation: gradientMove 20s ease infinite;
+
+
     color: var(--color-text);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
@@ -166,6 +179,20 @@ html {
 
     @media(max-width: 768px) {
       padding: 20px;
+    }
+  }
+
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
     }
   }
 

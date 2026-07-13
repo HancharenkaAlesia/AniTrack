@@ -1,7 +1,7 @@
 import './AddAnimeModal.scss'
 import AnimeForm from '../AnimeForm/AnimeForm.jsx'
 import { FiEdit, FiX, FiPlus } from 'react-icons/fi'
-import useDialog from '../../hooks/useDialog.js'
+import useDialog from '@/hooks/useDialog.js'
 
 const AddAnimeModal = ({onSubmit, loading, initialData}) => {
   const {
@@ -16,7 +16,7 @@ const AddAnimeModal = ({onSubmit, loading, initialData}) => {
       await onSubmit(formData)
       closeModal()
     } catch(error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

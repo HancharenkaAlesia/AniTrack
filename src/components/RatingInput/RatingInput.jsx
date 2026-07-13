@@ -1,18 +1,15 @@
 import './RatingInput.scss'
-import { GiFlowers } from 'react-icons/gi'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const RatingInput = ({ value, onChange }) => {
   const [hoverValue, setHoverValue] = useState(0)
 
-  useEffect(() => {
-    setHoverValue(0)
-  }, [value])
+  const displayValue = hoverValue || value
 
   return (
     <div className="rating-input">
       {[1, 2, 3, 4, 5].map(i => {
-        const active = hoverValue ? i <= hoverValue : i <= value
+        const active = i <= displayValue
 
         return (
           <button
@@ -23,7 +20,7 @@ const RatingInput = ({ value, onChange }) => {
             }`}
             onClick={() => onChange(i)}
             onMouseEnter={() => setHoverValue(i)}
-            onMouseLeave={() => setHoverValue(value)}
+            onMouseLeave={() => setHoverValue(0)}
           >
             🌸
           </button>

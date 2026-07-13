@@ -1,9 +1,10 @@
 import './AnimeCard.scss'
-import { FiTrash2, FiLoader } from "react-icons/fi"
+import { FiTrash2 } from "react-icons/fi"
 import { Link } from "react-router-dom"
-import { STATUS_VARIANTS } from '../../constants/badgeVariants'
+import { STATUS_VARIANTS } from '@/constants/badgeVariants'
 import Badge from '../Badge/Badge.jsx'
 import ConfirmModal from '../ConfirmModal/ConfirmModal.jsx'
+import highlightText from '@/utils/highlightText.jsx'
 
 const AnimeCard = (props) => {
   const {
@@ -20,27 +21,7 @@ const AnimeCard = (props) => {
     isDeleting
   } = props
 
-  const highlightText = (text, query) => {
-    const queryFormatted = query.trim()
-
-    if (!queryFormatted) return text
-
-    const escapedQuery = queryFormatted.replace(
-      /[.*+?^${}()|[\]\\]/g,
-      '\\$&'
-    )
-
-    const pattern = new RegExp(`(${escapedQuery})`, 'ig')
-    const splitText = text.split(pattern)
-
-    return splitText.map((item, index) => {
-      if (item.toLowerCase() === queryFormatted.toLowerCase()) {
-        return <mark key={index}>{item}</mark>
-      } else {
-        return item
-      }
-    })
-  }
+  const anime = props
 
   const statusVariant = STATUS_VARIANTS[status] ?? 'default'
 
@@ -71,7 +52,7 @@ const AnimeCard = (props) => {
           message="This action cannot be undone."
           confirmText="Delete"
           loading={isDeleting}
-          onConfirm={() => onDelete(props)}
+          onConfirm={() => onDelete(anime)}
           trigger={<FiTrash2 />}
         />
       </div>

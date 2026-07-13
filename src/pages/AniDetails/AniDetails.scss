@@ -6,6 +6,9 @@
     display: flex;
     gap: 16px;
     align-items: flex-start;
+    background-color: var(--color-surface);
+    padding: 30px;
+    border-radius: var(--radius);
   }
 
   &__content {
@@ -13,11 +16,12 @@
   }
 
   &__rating {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   &__title {
     text-align: left;
+    margin-bottom: 5px;
   }
 
   &__poster {

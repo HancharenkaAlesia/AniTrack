@@ -22,6 +22,33 @@ const useAnime = (filters = {
 
   const [totalAnime, setTotalAnime] = useState(0)
 
+  const fetchAnime = async (currentPage = page) => {
+    setLoading(true)
+    setError(null)
+    /*setAnime([])*/
+
+    try {
+      const { data, error, count } = await getAnime(currentPage, PAGE_SIZE, filters)
+
+      if (error) {
+        throw error
+      }
+
+      setAnime(data)
+      setTotalAnime(count)
+      setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)))
+
+      return data
+
+    } catch (error) {
+      console.error(error)
+      setError(error.message)
+      return []
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleAddAnime = async (newAnime) => {
     setIsAdding(true)
 
@@ -75,41 +102,16 @@ const useAnime = (filters = {
     }
   }
 
-  const fetchAnime = async (currentPage = page) => {
-    setLoading(true)
-    setError(null)
-    setAnime([])
-
-    try {
-      const { data, error, count } = await getAnime(currentPage, PAGE_SIZE, filters)
-
-      if (error) {
-        throw error
-      }
-
-      setAnime(data)
-      setTotalAnime(count)
-      setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)))
-
-      return data
-
-    } catch (error) {
-      console.error(error)
-      setError(error.message)
-      return []
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
     fetchAnime()
-  }, [page,
+  }, [
+    page,
     filters.type,
     filters.genre,
     filters.status,
     filters.search,
-    filters.sort,])
+    filters.sort,
+  ])
 
   return {
     anime,

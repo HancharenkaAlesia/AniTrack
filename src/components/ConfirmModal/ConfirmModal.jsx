@@ -1,6 +1,6 @@
 import './ConfirmModal.scss'
 import { FiLoader, FiX } from 'react-icons/fi'
-import useDialog from '../../hooks/useDialog'
+import useDialog from '@/hooks/useDialog'
 
 const ConfirmModal = ({
   className = '',
@@ -21,7 +21,7 @@ const ConfirmModal = ({
 
   const handleConfirm = async () => {
     try {
-      await onConfirm()
+      await onConfirm?.()
       closeModal()
     } catch (error) {
       console.error(error)
@@ -34,6 +34,7 @@ const ConfirmModal = ({
         type="button"
         onClick={openModal}
         className={className}
+        aria-label={title}
       >
         {trigger}
       </button>

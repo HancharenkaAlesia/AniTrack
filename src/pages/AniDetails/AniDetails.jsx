@@ -1,13 +1,13 @@
 import './AniDetails.scss'
 import { useParams, useNavigate } from 'react-router-dom'
 import { FiChevronLeft, FiLoader, FiTrash2 } from 'react-icons/fi'
-import Rating from '../../components/Rating/Rating.jsx'
+import Rating from '@/components/Rating/Rating.jsx'
 import { useEffect, useState } from 'react'
-import { updateAnime, getAnimeById, deleteAnime } from '../../api/anime'
-import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
-import Badge from '../../components/Badge/Badge.jsx'
-import { STATUS_VARIANTS } from '../../constants/badgeVariants.js'
-import ConfirmModal from '../../components/ConfirmModal/ConfirmModal.jsx'
+import { updateAnime, getAnimeById, deleteAnime } from '@/api/anime'
+import AddAnimeModal from '@/components/AddAnimeModal/AddAnimeModal.jsx'
+import Badge from '@/components/Badge/Badge.jsx'
+import { STATUS_VARIANTS } from '@/constants/badgeVariants.js'
+import ConfirmModal from '@/components/ConfirmModal/ConfirmModal.jsx'
 
 const AniDetails = () => {
   const navigate = useNavigate()
@@ -15,7 +15,7 @@ const AniDetails = () => {
   const { id } = useParams()
 
   useEffect(() => {
-    const fetchOne = async () => {
+    const fetchAnime = async () => {
       const { data, error } = await getAnimeById(id)
 
       if (error) {
@@ -26,7 +26,7 @@ const AniDetails = () => {
       setAnime(data)
     }
 
-    fetchOne()
+    fetchAnime()
   }, [id])
 
   const [isUpdating, setIsUpdating] = useState(false)

@@ -1,19 +1,19 @@
 import './AniTrack.scss'
-import AnimeCard from '../../components/AnimeCard/AnimeCard.jsx'
-import SearchForm from '../../components/SearchForm/SearchForm.jsx'
-import FiltersPanel from '../../components/FiltersPanel/FiltersPanel.jsx'
-import useAnimeFilters from '../../hooks/useAnimeFilters.js'
-import useLocalStorage from '../../hooks/useLocalStorage.js'
+import AnimeCard from '@/components/AnimeCard/AnimeCard.jsx'
+import SearchForm from '@/components/SearchForm/SearchForm.jsx'
+import FiltersPanel from '@/components/FiltersPanel/FiltersPanel.jsx'
+import useAnimeFilters from '@/hooks/useAnimeFilters.js'
+import useLocalStorage from '@/hooks/useLocalStorage.js'
 import { FiGrid, FiList } from 'react-icons/fi'
-import useAnime from '../../hooks/useAnime.js'
+import useAnime from '@/hooks/useAnime.js'
 import AnimeCardSkeleton
-  from '../../components/AnimeCardSkeleton/AnimeCardSkeleton.jsx'
-import AddAnimeModal from '../../components/AddAnimeModal/AddAnimeModal.jsx'
-import useToast from '../../hooks/useToast.js'
-import Toast from '../../components/Toast/Toast.jsx'
-import Sort from '../../components/Sort/Sort.jsx'
-import EmptyState from '../../components/EmptyState/EmptyState.jsx'
-import Pagination from '../../components/Pagintaion/Pagination.jsx'
+  from '@/components/AnimeCardSkeleton/AnimeCardSkeleton.jsx'
+import AddAnimeModal from '@/components/AddAnimeModal/AddAnimeModal.jsx'
+import useToast from '@/hooks/useToast.js'
+import Toast from '@/components/Toast/Toast.jsx'
+import Sort from '@/components/Sort/Sort.jsx'
+import EmptyState from '@/components/EmptyState/EmptyState.jsx'
+import Pagination from '@/components/Pagintaion/Pagination.jsx'
 import { useEffect } from 'react'
 
 const AniTrack = () => {
@@ -66,9 +66,26 @@ const AniTrack = () => {
     }
   }
 
-  const isInitialEmpty = !loading && !error && anime.length === 0
-  const isNoResults = !loading && !error && anime.length > 0 && anime.length === 0
+  const hasFilters = Boolean(
+    filters.search ||
+    filters.type ||
+    filters.genre ||
+    filters.status
+  )
+
   const hasResults = anime.length > 0
+
+  const isInitialEmpty =
+    !loading &&
+    !error &&
+    !hasResults &&
+    !hasFilters
+
+  const isNoResults =
+    !loading &&
+    !error &&
+    !hasResults &&
+    hasFilters
 
   useEffect(() => {
     setPage(1)
@@ -78,6 +95,7 @@ const AniTrack = () => {
     filters.genre,
     filters.status,
     filters.sort,
+    setPage,
   ])
 
   return (
@@ -107,14 +125,18 @@ const AniTrack = () => {
           <div className="anitrack__controls-panel-view">
             <button
               aria-label="Grid view"
-              className={view === 'grid' ? 'button button--with-icon is-active' : 'button button--with-icon'}
+              className={`button button--with-icon ${
+                view === 'grid' ? 'is-active' : ''
+              }`}
               onClick={() => setView('grid')}
             >
               <FiGrid />
             </button>
             <button
               aria-label="List view"
-              className={view === 'list' ? 'button button--with-icon is-active' : 'button button--with-icon'}
+              className={`button button--with-icon ${
+                view === 'list' ? 'is-active' : ''
+              }`}
               onClick={() => setView('list')}
             >
               <FiList />
@@ -123,7 +145,7 @@ const AniTrack = () => {
         </div>
       </div>
       <div className="anitrack__body">
-        {loading && (
+        {loading && anime.length === 0 && (
           <ul className={`anitrack__list anitrack__list--${view}`}>
             {Array.from({ length: 6 }).map((_, index) => (
               <AnimeCardSkeleton key={index} />
@@ -141,6 +163,7 @@ const AniTrack = () => {
         {isNoResults && (
           <EmptyState type="no-results" />
         )}
+
         {hasResults && (
           <ul className={`anitrack__list anitrack__list--${view}`}>
             {anime.map((item) => (

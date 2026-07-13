@@ -103,7 +103,10 @@ export const updateAnime = async (id, updates, oldImagePath) => {
     image_path = uploaded.path
   }
 
-  const { image, removeImage, ...rest } = updates
+  const rest = { ...updates }
+
+  delete rest.image
+  delete rest.removeImage
 
   return await supabase
     .from('anime')
