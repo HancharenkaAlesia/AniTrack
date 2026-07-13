@@ -14,7 +14,6 @@ import Toast from '@/components/Toast/Toast.jsx'
 import Sort from '@/components/Sort/Sort.jsx'
 import EmptyState from '@/components/EmptyState/EmptyState.jsx'
 import Pagination from '@/components/Pagintaion/Pagination.jsx'
-import { useEffect } from 'react'
 
 const AniTrack = () => {
   const {
@@ -66,6 +65,11 @@ const AniTrack = () => {
     }
   }
 
+  const handleFilterChange = (key, value) => {
+    setPage(1)
+    updateParams(key, value)
+  }
+
   const hasFilters = Boolean(
     filters.search ||
     filters.type ||
@@ -87,17 +91,6 @@ const AniTrack = () => {
     !hasResults &&
     hasFilters
 
-  useEffect(() => {
-    setPage(1)
-  }, [
-    filters.search,
-    filters.type,
-    filters.genre,
-    filters.status,
-    filters.sort,
-    setPage,
-  ])
-
   return (
     <div className="anitrack">
       <header className="anitrack__header">
@@ -115,11 +108,11 @@ const AniTrack = () => {
         <div className="anitrack__controls-panel-wrapper">
           <Sort
             value={filters.sort}
-            onChange={updateParams}
+            onChange={handleFilterChange}
           />
           <FiltersPanel
             filters={filters}
-            onFilterChange={updateParams}
+            onFilterChange={handleFilterChange}
             filtersReset={filtersReset}
           />
           <div className="anitrack__controls-panel-view">
