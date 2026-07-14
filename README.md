@@ -1,16 +1,53 @@
-# React + Vite
+# 🌸 AniTrack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AniTrack is a pet project for tracking your personal anime collection with ratings, custom posters and notes.
 
-Currently, two official plugins are available:
+🔗 Live Demo: https://ani-track-jade.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)
+![SCSS](https://img.shields.io/badge/-SCSS-CC6699?logo=sass&logoColor=white)
+![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?logo=supabase&logoColor=white)
+![React Router](https://img.shields.io/badge/-React%20Router-CA4245?logo=react-router&logoColor=white)
+![Vercel](https://img.shields.io/badge/-Vercel-000000?logo=vercel&logoColor=white)
 
-## React Compiler
+## Preview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Main page
 
-## Expanding the ESLint configuration
+![Main page](./screenshots/main.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Anime details
+
+![Details](./screenshots/details.png)
+
+### Adding anime
+
+![Add anime](./screenshots/add.gif)
+
+## Features
+
+- ➕ Add, edit and delete anime
+- 🖼 Upload custom posters
+- ⭐ Rate anime with sakura flowers
+- 📝 Save personal notes
+- 🔍 Search by title
+- 🎛 Filter by genre, type and status
+- ↕ Sort by title, rating or date added
+- 📄 Pagination
+- 📱 Responsive layout
+- ☁ Store data and images in Supabase
+- 💾 Save preferred view mode in Local Storage
+
+## What I practiced
+
+- React Hooks
+- Custom React hooks
+- CRUD operations
+- REST API integration (Supabase)
+- File upload and Supabase Storage
+- URL search parameters
+- Reusable modal components
+- Pagination, filtering and sorting
+- Local Storage
+- Responsive UI
