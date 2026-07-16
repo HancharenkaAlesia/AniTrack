@@ -2,11 +2,17 @@
   position: relative;
   border: 2px dashed #ccc;
   border-radius: var(--radius);
-  padding: 30px;
+  min-height: 70px;
+  padding: 10px;
   text-align: center;
   cursor: pointer;
 
   &__body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
     &--dragging {
       border-color: var(--color-accent);
       background: rgba(255, 192, 203, 0.15);
